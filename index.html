@@ -7,14 +7,21 @@
         <link href="styles/style.css" rel="stylesheet">
         <link rel="manifest" href="manifest.json">
         <script>
-            let mainLoaded = false;
-            let wasmLoaded = false;
+            let wasmWasLoaded = false;
+            let mainWasLoaded = false;
         </script>
         <script src="scripts/wasm/run_wasm.js"></script>
         <script src="scripts/main.js" defer></script>
-        <title></title>
+        <title>年齢の計算</title>
     </head>
     <body>
-
+        <header>
+            <h1>年齢の計算</h1>
+        </header>
+        <p id="nowLoading">読込中...</p>
+        <p id="inputField" hidden><input type="text" id="year" inputmode="numeric" size="6" maxlength="4">/<input type="text" id="month" inputmode="numeric" size="6" maxlength="2">/<input type="text" id="day" inputmode="numeric" size="6" maxlength="2"></p>
+        <footer>
+            <small>ソースコード</small>
+        </footer>
     </body>
 </html>
