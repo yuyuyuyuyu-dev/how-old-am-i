@@ -12,7 +12,7 @@ fetch('scripts/wasm/wasm_exec.js').then(r => r.text()).then(t => eval(t)).then((
 
     const go = new Go();
     let mod, inst;
-    WebAssembly.instantiateStreaming(fetch("go/main.wasm"), go.importObject).then((result) => {
+    WebAssembly.instantiateStreaming(fetch("go/go.wasm"), go.importObject).then((result) => {
         mod = result.module;
         inst = result.instance;
 
