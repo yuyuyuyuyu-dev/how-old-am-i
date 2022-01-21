@@ -16,7 +16,7 @@ function main() {
     year.addEventListener("input", () => {
         showResult();
 
-        if (year.value.length >= 4) {
+        if (year.value.length >= 4 && isFinite(year.value)) {
             month.focus();
         }
     });
@@ -24,7 +24,7 @@ function main() {
     month.addEventListener("input", () => {
         showResult();
 
-        if (month.value.length >= 2) {
+        if (month.value.length >= 2 && isFinite(month.value)) {
             day.focus();
         }
     });
@@ -36,7 +36,7 @@ function main() {
 
 
 function showResult() {
-    outputField.textContent = howOldAmI("hoge", "fuga", "piyo", "2022");
+    outputField.textContent = howOldAmI(year.value, month.value, day.value);
 }
 
 
