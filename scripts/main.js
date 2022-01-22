@@ -24,7 +24,7 @@ function main() {
     month.addEventListener("input", () => {
         showResult();
 
-        if (month.value.length >= 2 && isFinite(month.value)) {
+        if (month.value.length >= 2 && isFinite(month.value) && 1 <= month.value && month.value <= 12) {
             day.focus();
         }
     });
