@@ -9,18 +9,32 @@
     left: 50%;
 }
 
+#nowLoading, #inputField, input {
+    font-size: min(9vw, 40px);
+}
+
 #nowLoading, #inputField {
     position: relative;
     transform: translate(-50%, -50%);
 }
 
+#inputField {
+    margin: 0;
+}
+
 input {
     text-align: right;
+
+    min-width: 6vw;
 }
 
 #outputField {
+    margin: 0;
+
     position: relative;
     transform: translate(-50%, -50%);
+
+    font-size: min(7vw, 30px);
 }
 
 footer {
