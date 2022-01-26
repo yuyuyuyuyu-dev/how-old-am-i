@@ -3,6 +3,7 @@
     src: url('fonts/Nyashi.woff2') format('woff2');
 }
 
+
 @font-face {
     font-family: 'Jiyucho';
     src: url('fonts/Jiyucho.woff2') format('woff2');
@@ -43,18 +44,22 @@ h1 {
     left: 50%;
 }
 
+
 #nowLoading, #inputField, input {
     font-size: min(9vw, 40px);
 }
+
 
 #nowLoading, #inputField {
     position: relative;
     transform: translate(-50%, -50%);
 }
 
+
 #inputField {
     margin: 0;
 }
+
 
 input {
     margin-left: 3px;
@@ -67,6 +72,7 @@ input {
     font-family: 'Nyashi', sans-serif;
 }
 
+
 #PleaseEnterYourDateOfBirth {
     position: absolute;
     transform: translate(-50%, -6em);
@@ -74,6 +80,7 @@ input {
 
     color: #303030;
 }
+
 
 #outputField {
     margin: 0;
@@ -84,6 +91,7 @@ input {
 
     font-size: min(7vw, 30px);
 }
+
 
 footer {
     position: absolute;
