@@ -23,9 +23,12 @@
 }
 
 input {
-    text-align: right;
+    margin-left: 3px;
+    margin-right: 3px;
 
-    min-width: 100px;
+    width: 2.3em;
+
+    text-align: right;
 }
 
 #outputField {
