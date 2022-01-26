@@ -67,6 +67,14 @@ input {
     font-family: 'Nyashi', sans-serif;
 }
 
+#PleaseEnterYourDateOfBirth {
+    position: absolute;
+    transform: translate(-50%, -6em);
+    font-size: min(6.5vw, 33px);
+
+    color: #303030;
+}
+
 #outputField {
     margin: 0;
     margin-top: 20px;

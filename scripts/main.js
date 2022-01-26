@@ -11,6 +11,8 @@ function main() {
     nowLoading.style.display = "none";
     const inputField = document.getElementById("inputField");
     inputField.removeAttribute("hidden");
+    const pleaseEnterYourDateOfBirth = document.getElementById("PleaseEnterYourDateOfBirth");
+    pleaseEnterYourDateOfBirth.removeAttribute("hidden");
 
     // 入力欄になにかしら入力されたときの処理を定義する
     year.addEventListener("input", () => {
