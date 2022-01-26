@@ -27,7 +27,7 @@ function main() {
         showResult();
     });
 
-    // WebAssemblyの準備が終わるまで「読込中...」と表示しておく
+    // WebAssemblyの準備が終わるまで「読み込み中...」と表示しておく
     const nowLoading = document.getElementById("nowLoading");
     nowLoading.style.display = "none";
     const inputField = document.getElementById("inputField");
