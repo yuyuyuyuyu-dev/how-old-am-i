@@ -6,14 +6,6 @@ const outputField = document.getElementById("outputField");
 
 
 function main() {
-    // WebAssemblyの準備が終わるまで「読込中...」と表示しておく
-    const nowLoading = document.getElementById("nowLoading");
-    nowLoading.style.display = "none";
-    const inputField = document.getElementById("inputField");
-    inputField.removeAttribute("hidden");
-    const pleaseEnterYourDateOfBirth = document.getElementById("PleaseEnterYourDateOfBirth");
-    pleaseEnterYourDateOfBirth.removeAttribute("hidden");
-
     // 入力欄になにかしら入力されたときの処理を定義する
     year.addEventListener("input", () => {
         showResult();
@@ -34,6 +26,14 @@ function main() {
     day.addEventListener("input", () => {
         showResult();
     });
+
+    // WebAssemblyの準備が終わるまで「読込中...」と表示しておく
+    const nowLoading = document.getElementById("nowLoading");
+    nowLoading.style.display = "none";
+    const inputField = document.getElementById("inputField");
+    inputField.removeAttribute("hidden");
+    const pleaseEnterYourDateOfBirth = document.getElementById("PleaseEnterYourDateOfBirth");
+    pleaseEnterYourDateOfBirth.removeAttribute("hidden");
 }
 
 
