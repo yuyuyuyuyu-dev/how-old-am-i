@@ -91,9 +91,3 @@ input {
 
     font-size: min(7vw, 30px);
 }
-
-
-footer {
-    position: absolute;
-    bottom: 0;
-}
