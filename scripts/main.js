@@ -8,6 +8,8 @@ const outputField = document.getElementById("outputField");
 function main() {
     // 入力欄になにかしら入力されたときの処理を定義する
     year.addEventListener("input", () => {
+        year.value = year.value.replace(/[^0-9]/g, "");
+
         showResult();
 
         if (year.value.length >= 4 && isFinite(year.value)) {
@@ -16,6 +18,8 @@ function main() {
     });
 
     month.addEventListener("input", () => {
+        month.value = month.value.replace(/[^0-9]/g, "");
+
         showResult();
 
         if (month.value.length >= 2 && isFinite(month.value) && 1 <= month.value && month.value <= 12) {
@@ -24,6 +28,8 @@ function main() {
     });
 
     day.addEventListener("input", () => {
+        day.value = day.value.replace(/[^0-9]/g, "");
+
         showResult();
     });
 
