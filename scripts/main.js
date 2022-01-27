@@ -48,6 +48,14 @@ function showResult() {
 }
 
 
+// ServiceWorkerの登録をする
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker
+        .register('sw.js', {scope: '/how-old-am-i/'})
+        .then(() => { console.log('Service Worker Registered'); });
+}
+
+
 mainWasLoaded = true;
 if (wasmWasLoaded && mainWasloaded) {
     main();
