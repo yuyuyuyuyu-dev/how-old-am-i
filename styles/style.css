@@ -45,12 +45,9 @@ h1 {
 }
 
 
-#nowLoading, #inputField, input {
-    font-size: min(9vw, 40px);
-}
-
-
 #nowLoading, #inputField {
+    font-size: min(12vw, 55px);
+
     position: relative;
     transform: translate(-50%, -50%);
 }
@@ -58,18 +55,37 @@ h1 {
 
 #inputField {
     margin: 0;
+    padding: 0;
 }
 
 
 input {
-    margin-left: 3px;
-    margin-right: 3px;
+    margin: 0 3px 0.2em 3px;
+    padding: 5px 2px 4px 2px;
 
-    width: 2em;
+    vertical-align: middle;
+
+    border-style: solid;
+    border-width: 0 0 2px 0;
+    border-color: #808080;
+
+    caret-color: #1565c0;
+
+    width: 3em;
 
     text-align: right;
 
     font-family: 'Nyashi', sans-serif;
+    font-size: min(8vw, 38px);
+}
+
+input:focus {
+    border-color: #1565c0;
+    outline: none;
+}
+
+input::placeholder {
+    color: #808080;
 }
 
 
