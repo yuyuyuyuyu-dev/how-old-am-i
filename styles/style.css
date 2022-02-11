@@ -41,7 +41,12 @@ h1 {
 }
 
 
-#nowLoading, #inputField {
+#nowLoading {
+    font-size: min(8vw, 36px);
+}
+
+
+#inputField {
     font-size: min(12vw, 55px);
 }
 

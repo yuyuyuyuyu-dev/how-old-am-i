@@ -40,6 +40,7 @@ function main() {
     inputField.removeAttribute("hidden");
     const pleaseEnterYourDateOfBirth = document.getElementById("PleaseEnterYourDateOfBirth");
     pleaseEnterYourDateOfBirth.removeAttribute("hidden");
+    document.getElementById("result").removeAttribute("hidden");
 }
 
 
