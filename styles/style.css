@@ -92,7 +92,7 @@ input::placeholder {
 }
 
 
-#outputField {
+#result {
     height: 3ex;
 
     font-size: min(7vw, 30px);

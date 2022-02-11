@@ -2,7 +2,7 @@ const year = document.getElementById("year");
 const month = document.getElementById("month");
 const day = document.getElementById("day");
 
-const outputField = document.getElementById("outputField");
+const result = document.getElementById("result");
 
 
 function main() {
@@ -44,7 +44,7 @@ function main() {
 
 
 function showResult() {
-    outputField.textContent = howOldAmI(year.value, month.value, day.value);
+    result.textContent = howOldAmI(year.value, month.value, day.value);
 }
 
 
