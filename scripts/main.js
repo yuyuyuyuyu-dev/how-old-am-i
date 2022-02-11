@@ -38,7 +38,7 @@ function main() {
     nowLoading.style.display = "none";
     const inputField = document.getElementById("inputField");
     inputField.removeAttribute("hidden");
-    const pleaseEnterYourDateOfBirth = document.getElementById("PleaseEnterYourDateOfBirth");
+    const pleaseEnterYourDateOfBirth = document.getElementById("pleaseEnterYourDateOfBirth");
     pleaseEnterYourDateOfBirth.removeAttribute("hidden");
     document.getElementById("result").removeAttribute("hidden");
 }
