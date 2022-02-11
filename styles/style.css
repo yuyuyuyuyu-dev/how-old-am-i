@@ -46,11 +46,6 @@ h1 {
 }
 
 
-#inputField {
-    font-size: min(12vw, 55px);
-}
-
-
 #pleaseEnterYourDateOfBirth {
     margin-bottom: 0.8ex;
 
@@ -62,12 +57,14 @@ h1 {
 
 #inputField {
     margin-bottom: 6px;
+
+    font-size: min(13vw, 55px);
 }
 
 
 input {
-    margin: 0 3px 0.2em 3px;
-    padding: 5px 2px 4px 2px;
+    margin: 0 0.3ex 0.3em 0.3ex;
+    padding-right: 0.2ex;
 
     vertical-align: middle;
 
@@ -78,7 +75,7 @@ input {
 
     caret-color: #1565c0;
 
-    width: 3em;
+    width: 5.3ex;
 
     text-align: right;
 
@@ -94,6 +91,7 @@ input:focus {
 
 input::placeholder {
     color: #808080;
+    font-size: min(7vw, 32px);
 }
 
 
