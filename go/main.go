@@ -21,26 +21,28 @@ func registerCallbacks() {
 }
 
 
-func howOldAmI(this js.Value, args []js.Value) interface{} {
+func howOldAmI(this js.Value, args []js.Value) (result interface{}) {
+    result = ""
     year, err := strconv.Atoi(args[0].String())
     if err != nil {
-        return ""
+        return
     }
     month, err := strconv.Atoi(args[1].String())
     if err != nil {
-        return ""
+        return
     }
     day, err := strconv.Atoi(args[2].String())
     if err != nil {
-        return ""
+        return
     }
 
     dateOfBirth, err := time.Parse("2006/01/02", fmt.Sprintf("%04d", year) + "/" + fmt.Sprintf("%02d", month) + "/" + fmt.Sprintf("%02d", day))
     if err != nil {
-        return ""
+        return
     }
 
-    return "あなたは " + strconv.Itoa(calcAge(dateOfBirth)) + "歳 です"
+    result = "あなたは " + strconv.Itoa(calcAge(dateOfBirth)) + "歳 です"
+    return
 }
 
 
