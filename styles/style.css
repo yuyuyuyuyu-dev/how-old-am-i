@@ -12,13 +12,11 @@
 
 body {
     font-family: 'Nyashi', sans-serif;
-
-    margin: 0px;
 }
 
 
 header {
-    padding: 15px;
+    padding: 1ex;
     padding-right: auto;
 
     background-color: #bbdefb;
@@ -26,8 +24,6 @@ header {
 
 
 h1 {
-    margin: 0px;
-
     font-family: 'Jiyucho', sans-serif;
     font-weight: normal;
 }
@@ -77,6 +73,7 @@ input {
 
     font-family: 'Nyashi', sans-serif;
     font-size: min(8vw, 38px);
+    line-height: 1;
 }
 
 input:focus {
