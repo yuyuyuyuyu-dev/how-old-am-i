@@ -3,7 +3,7 @@ self.addEventListener('install', (e) => {
         caches.open('how-old-am-i').then((cache) => cache.addAll([
             '/how-old-am-i/',
             '/how-old-am-i/index.html',
-            '/how-old-am-i/styles/reset/reset.min.css',
+            '/how-old-am-i/styles/reset/destyle.min.css',
             '/how-old-am-i/styles/style.css',
             '/how-old-am-i/styles/fonts/Nyashi.woff2',
             '/how-old-am-i/styles/fonts/Jiyucho.woff2',
