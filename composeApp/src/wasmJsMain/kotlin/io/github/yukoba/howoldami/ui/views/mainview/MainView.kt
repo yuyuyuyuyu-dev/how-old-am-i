@@ -10,26 +10,28 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import io.github.yukoba.howoldami.ui.components.MainScreen
 import io.github.yukoba.howoldami.ui.components.TopAppBar
+import io.github.yukoba.howoldami.ui.components.types.DateOfBirth
+import io.github.yukoba.howoldami.usecase.ValidateIntegerUseCase
 import io.github.yukoba.howoldami.usecase.calculateAgeUseCase
 
 @Composable
 fun MainView() {
-    var year by remember { mutableStateOf("") }
-    var month by remember { mutableStateOf("") }
-    var day by remember { mutableStateOf("") }
+    val validateIntegerUseCase = ValidateIntegerUseCase()
 
+    var dateOfBirth by remember { mutableStateOf(DateOfBirth()) }
     var age by remember { mutableStateOf("") }
 
-    fun calculateAge() {
+    fun onDateOfBirthChange(date: DateOfBirth) {
+        dateOfBirth = date
+
         calculateAgeUseCase(
-            year = year,
-            month = month,
-            day = day,
-            onSucceeded = {
+            dateOfBirth = dateOfBirth,
+            onSuccess = {
                 age = it
             },
-            onFailed = {
+            onFailure = {
                 age = ""
+                println("error: $it")
             }
         )
     }
@@ -42,23 +44,11 @@ fun MainView() {
         },
         content = { innerPadding ->
             MainScreen(
-                year = year,
-                month = month,
-                day = day,
+                dateOfBirth = dateOfBirth,
                 age = age,
-                onYearChanged = {
-                    year = it
-                    calculateAge()
-                },
-                onMonthChanged = {
-                    month = it
-                    calculateAge()
-                },
-                onDayChanged = {
-                    day = it
-                    calculateAge()
-                },
                 modifier = Modifier.padding(innerPadding),
+                onDateOfBirthChange = ::onDateOfBirthChange,
+                validateIntegerUseCase = validateIntegerUseCase,
             )
         },
     )

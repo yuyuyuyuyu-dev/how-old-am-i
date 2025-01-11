@@ -3,26 +3,22 @@ package io.github.yukoba.howoldami.ui.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import io.github.yukoba.howoldami.ui.components.types.DateOfBirth
+import io.github.yukoba.howoldami.usecase.ValidateIntegerUseCase
 
 @Composable
 fun MainScreen(
-    year: String,
-    month: String,
-    day: String,
+    dateOfBirth: DateOfBirth,
     age: String,
-    onYearChanged: (String) -> Unit,
-    onMonthChanged: (String) -> Unit,
-    onDayChanged: (String) -> Unit,
+    onDateOfBirthChange: (DateOfBirth) -> Unit,
     modifier: Modifier = Modifier,
+    validateIntegerUseCase: ValidateIntegerUseCase,
 ) {
     Box(
         modifier = modifier.fillMaxSize(),
@@ -33,28 +29,11 @@ fun MainScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text("生年月日を入力してください")
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                TextField(
-                    value = year,
-                    onValueChange = onYearChanged,
-                    modifier = Modifier.width(72.dp),
-                )
-                Text("/")
-                TextField(
-                    value = month,
-                    onValueChange = onMonthChanged,
-                    modifier = Modifier.width(72.dp),
-                )
-                Text("/")
-                TextField(
-                    value = day,
-                    onValueChange = onDayChanged,
-                    modifier = Modifier.width(72.dp),
-                )
-            }
+            DateOfBirthInputField(
+                value = dateOfBirth,
+                onValueChange = onDateOfBirthChange,
+                validateIntegerUseCase = validateIntegerUseCase,
+            )
             Text("あなたは ${age}歳 です")
         }
     }

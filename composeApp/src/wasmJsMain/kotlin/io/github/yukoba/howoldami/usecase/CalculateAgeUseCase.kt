@@ -1,29 +1,32 @@
 package io.github.yukoba.howoldami.usecase
 
+import io.github.yukoba.howoldami.ui.components.types.DateOfBirth
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
 fun calculateAgeUseCase(
-    year: String,
-    month: String,
-    day: String,
-    onSucceeded: (String) -> Unit,
-    onFailed: (Exception) -> Unit = {},
+    dateOfBirth: DateOfBirth,
+    onSuccess: (String) -> Unit,
+    onFailure: (Exception) -> Unit = {},
 ) {
     val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
 
     try {
-        var age = today.year - year.toInt()
+        var age = today.year - dateOfBirth.year.toInt()
 
-        val birthdayThisYear = LocalDate(today.year, month.toInt(), day.toInt())
+        val birthdayThisYear = LocalDate(
+            year = today.year,
+            monthNumber = dateOfBirth.month.toInt(),
+            dayOfMonth = dateOfBirth.day.toInt(),
+        )
         if (today.date < birthdayThisYear) {
             age -= 1
         }
 
-        onSucceeded(age.toString())
+        onSuccess(age.toString())
     } catch (e: Exception) {
-        onFailed(e)
+        onFailure(e)
     }
 }
