@@ -12,33 +12,31 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.navigation.NavHostController
-import io.github.yukoba.howoldami.ui.types.NavigateDestination
+import androidx.compose.ui.Modifier
 
 @Composable
 fun TopAppBar(
     title: String,
-    navHostController: NavHostController,
+    navigateBackIsPossible: Boolean,
+    onNavigateBackButtonClick: () -> Unit,
+    onNavigateThirdPartyLicensesButtonClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    var canNavigateBack by remember { mutableStateOf(false) }
-
     TopAppBar(
         title = { Text(title) },
+        modifier = modifier,
         navigationIcon = {
-            if (canNavigateBack) {
+            if (navigateBackIsPossible) {
                 IconButton(
                     content = { Icon(Icons.Default.ArrowBack, "back") },
-                    onClick = {
-                        navHostController.navigate(NavigateDestination.MAIN.name)
-                        canNavigateBack = false
-                    },
+                    onClick = onNavigateBackButtonClick,
                 )
             }
         },
         actions = {
-            var menuIsExpanded by remember { mutableStateOf(false) }
+            var menuIsExpanded by rememberSaveable { mutableStateOf(false) }
 
             IconButton(
                 content = { Icon(Icons.Default.MoreVert, "menu") },
@@ -54,9 +52,8 @@ fun TopAppBar(
                 DropdownMenuItem(
                     content = { Text("サードパーティーライセンス") },
                     onClick = {
-                        navHostController.navigate(NavigateDestination.THIRD_PARTY_LICENSES.name)
+                        onNavigateThirdPartyLicensesButtonClick()
                         menuIsExpanded = false
-                        canNavigateBack = true
                     },
                 )
             }

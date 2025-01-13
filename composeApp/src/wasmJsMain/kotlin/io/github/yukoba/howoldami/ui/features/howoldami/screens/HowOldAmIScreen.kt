@@ -1,17 +1,16 @@
-package io.github.yukoba.howoldami.ui.views.mainview
+package io.github.yukoba.howoldami.ui.features.howoldami.screens
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import io.github.yukoba.howoldami.ui.components.MainScreen
 import io.github.yukoba.howoldami.ui.components.types.DateOfBirth
 import io.github.yukoba.howoldami.usecase.ValidateIntegerUseCase
 import io.github.yukoba.howoldami.usecase.calculateAgeUseCase
 
 @Composable
-fun MainView(
+fun HowOldAmIScreen(
 ) {
     val validateIntegerUseCase = ValidateIntegerUseCase()
 

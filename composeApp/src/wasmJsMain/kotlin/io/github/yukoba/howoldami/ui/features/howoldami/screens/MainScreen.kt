@@ -1,4 +1,4 @@
-package io.github.yukoba.howoldami.ui.components
+package io.github.yukoba.howoldami.ui.features.howoldami.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import io.github.yukoba.howoldami.ui.components.DateOfBirthInputField
 import io.github.yukoba.howoldami.ui.components.types.DateOfBirth
 import io.github.yukoba.howoldami.usecase.ValidateIntegerUseCase
 
