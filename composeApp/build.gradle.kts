@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.licensee)
 }
 
 kotlin {
@@ -44,4 +45,9 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel.compose)
         }
     }
+}
+
+licensee {
+    allow("Apache-2.0")
+    allow("MIT")
 }

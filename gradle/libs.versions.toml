@@ -6,6 +6,7 @@ kotlin = "2.1.0"
 datetime = "0.6.1"
 navigation = "2.8.0-alpha10"
 viewModelCompose = "2.8.2"
+licensee = "1.12.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -21,3 +22,4 @@ androidx-lifecycle-viewmodel-compose = { group = "org.jetbrains.androidx.lifecyc
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+licensee = { id = "app.cash.licensee", version.ref = "licensee" }
