@@ -7,20 +7,24 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import io.github.yukoba.howoldami.ui.components.TopAppBar
+import io.github.yukoba.howoldami.ui.features.howoldami.HowOldAmIViewModel
 import io.github.yukoba.howoldami.ui.types.NavigateDestination
 import io.github.yukoba.howoldami.ui.features.howoldami.screens.HowOldAmIScreen
 import io.github.yukoba.howoldami.ui.features.thirdpartylicenses.screens.ThirdPartyLicensesScreen
 
 @Composable
 fun App(
+    howOldAmIViewModel: HowOldAmIViewModel = viewModel { HowOldAmIViewModel() },
     navController: NavHostController = rememberNavController(),
 ) {
     MaterialTheme(
@@ -30,6 +34,8 @@ fun App(
         val currentScreen = NavigateDestination.valueOf(
             backStackEntry?.destination?.route ?: NavigateDestination.HowOldAmI.name
         )
+
+        val howOldAmIUiState by howOldAmIViewModel.uiState.collectAsState()
 
         Scaffold(
             modifier = Modifier.fillMaxSize(),
@@ -57,7 +63,11 @@ fun App(
                     .padding(innerPadding)
             ) {
                 composable(route = NavigateDestination.HowOldAmI.name) {
-                    HowOldAmIScreen()
+                    HowOldAmIScreen(
+                        dateOfBirth = howOldAmIUiState.dateOfBirth,
+                        age = howOldAmIUiState.age,
+                        onDateOfBirthChange = howOldAmIViewModel::onDateOfBirthChange,
+                    )
                 }
 
                 composable(route = NavigateDestination.ThirdPartyLicenses.name) {

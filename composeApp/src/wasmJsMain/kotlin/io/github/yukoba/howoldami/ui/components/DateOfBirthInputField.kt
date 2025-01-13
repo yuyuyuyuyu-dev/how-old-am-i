@@ -17,13 +17,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import io.github.yukoba.howoldami.ui.components.types.DateOfBirth
-import io.github.yukoba.howoldami.usecase.ValidateIntegerUseCase
+import io.github.yukoba.howoldami.usecase.validateIntegerUseCase
 
 @Composable
 fun DateOfBirthInputField(
     value: DateOfBirth,
     onValueChange: (DateOfBirth) -> Unit,
-    validateIntegerUseCase: ValidateIntegerUseCase,
 ) {
     val monthFocusRequester = remember { FocusRequester() }
     val dayFocusRequester = remember { FocusRequester() }
