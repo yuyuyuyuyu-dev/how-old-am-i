@@ -5,7 +5,7 @@ module.exports = {
     ],
     swDest: "build/dist/wasmJs/productionExecutable/serviceWorker.js",
     runtimeCaching: [{
-        handler: "CacheFirst",
+        handler: "StaleWhileRevalidate",
         urlPattern: /.+/,
     }],
 };
