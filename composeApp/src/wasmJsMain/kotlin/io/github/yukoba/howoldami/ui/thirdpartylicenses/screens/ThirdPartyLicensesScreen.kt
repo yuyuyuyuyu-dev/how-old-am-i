@@ -1,14 +1,17 @@
-package io.github.yukoba.howoldami.ui.features.thirdpartylicenses.screens
+package io.github.yukoba.howoldami.ui.thirdpartylicenses.screens
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.*
+import androidx.compose.material.Divider
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ListItem
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.UriHandler
 import androidx.compose.ui.text.style.TextDecoration
-import io.github.yukoba.howoldami.ui.features.thirdpartylicenses.types.ThirdPartyLicense
+import io.github.yukoba.howoldami.data.types.ThirdPartyLicense
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable

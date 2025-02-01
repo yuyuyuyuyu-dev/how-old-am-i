@@ -1,16 +1,14 @@
-package io.github.yukoba.howoldami.ui.features.thirdpartylicenses
+package io.github.yukoba.howoldami.ui.thirdpartylicenses
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.github.yukoba.howoldami.ui.features.thirdpartylicenses.types.ThirdPartyLicensesUiState
-import io.github.yukoba.howoldami.usecase.FetchThirdPartyLicensesUseCase
-import kotlinx.coroutines.Dispatchers
+import io.github.yukoba.howoldami.domain.FetchThirdPartyLicensesUseCase
+import io.github.yukoba.howoldami.ui.thirdpartylicenses.types.ThirdPartyLicensesUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class ThirdPartyLicensesViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(ThirdPartyLicensesUiState())

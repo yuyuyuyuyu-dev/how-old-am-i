@@ -16,8 +16,8 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import io.github.yukoba.howoldami.ui.components.types.DateOfBirth
-import io.github.yukoba.howoldami.usecase.validateIntegerUseCase
+import io.github.yukoba.howoldami.data.types.DateOfBirth
+import io.github.yukoba.howoldami.domain.validateIntegerUseCase
 
 @Composable
 fun DateOfBirthInputField(

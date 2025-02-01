@@ -1,6 +1,6 @@
-package io.github.yukoba.howoldami.usecase
+package io.github.yukoba.howoldami.domain
 
-import io.github.yukoba.howoldami.ui.components.types.DateOfBirth
+import io.github.yukoba.howoldami.data.types.DateOfBirth
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone

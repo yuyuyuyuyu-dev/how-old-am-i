@@ -1,9 +1,9 @@
-package io.github.yukoba.howoldami.ui.features.howoldami
+package io.github.yukoba.howoldami.ui.howoldami
 
 import androidx.lifecycle.ViewModel
-import io.github.yukoba.howoldami.ui.components.types.DateOfBirth
-import io.github.yukoba.howoldami.ui.features.howoldami.types.HowOldAmIUiState
-import io.github.yukoba.howoldami.usecase.calculateAgeUseCase
+import io.github.yukoba.howoldami.data.types.DateOfBirth
+import io.github.yukoba.howoldami.domain.calculateAgeUseCase
+import io.github.yukoba.howoldami.ui.howoldami.types.HowOldAmIUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

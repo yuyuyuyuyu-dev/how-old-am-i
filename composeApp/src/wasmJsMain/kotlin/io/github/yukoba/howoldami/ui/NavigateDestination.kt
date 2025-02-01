@@ -1,4 +1,4 @@
-package io.github.yukoba.howoldami.ui.types
+package io.github.yukoba.howoldami.ui
 
 enum class NavigateDestination {
     HowOldAmI,

@@ -1,4 +1,4 @@
-package io.github.yukoba.howoldami.ui.features.thirdpartylicenses.types
+package io.github.yukoba.howoldami.data.types
 
 data class ThirdPartyLicense(
     val libraryName: String,

@@ -18,11 +18,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import io.github.yukoba.howoldami.ui.components.TopAppBar
-import io.github.yukoba.howoldami.ui.features.howoldami.HowOldAmIViewModel
-import io.github.yukoba.howoldami.ui.types.NavigateDestination
-import io.github.yukoba.howoldami.ui.features.howoldami.screens.HowOldAmIScreen
-import io.github.yukoba.howoldami.ui.features.thirdpartylicenses.ThirdPartyLicensesViewModel
-import io.github.yukoba.howoldami.ui.features.thirdpartylicenses.screens.ThirdPartyLicensesScreen
+import io.github.yukoba.howoldami.ui.howoldami.HowOldAmIViewModel
+import io.github.yukoba.howoldami.ui.howoldami.screens.HowOldAmIScreen
+import io.github.yukoba.howoldami.ui.thirdpartylicenses.ThirdPartyLicensesViewModel
+import io.github.yukoba.howoldami.ui.thirdpartylicenses.screens.ThirdPartyLicensesScreen
 
 @Composable
 fun App(

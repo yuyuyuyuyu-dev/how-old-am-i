@@ -1,4 +1,4 @@
-package io.github.yukoba.howoldami.usecase
+package io.github.yukoba.howoldami.domain
 
 fun validateIntegerUseCase(
     string: String,

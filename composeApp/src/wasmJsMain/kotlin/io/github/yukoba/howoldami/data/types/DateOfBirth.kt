@@ -1,4 +1,4 @@
-package io.github.yukoba.howoldami.ui.components.types
+package io.github.yukoba.howoldami.data.types
 
 data class DateOfBirth(
     val year: String = "",
