@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -20,11 +21,13 @@ import io.github.yukoba.howoldami.ui.components.TopAppBar
 import io.github.yukoba.howoldami.ui.features.howoldami.HowOldAmIViewModel
 import io.github.yukoba.howoldami.ui.types.NavigateDestination
 import io.github.yukoba.howoldami.ui.features.howoldami.screens.HowOldAmIScreen
+import io.github.yukoba.howoldami.ui.features.thirdpartylicenses.ThirdPartyLicensesViewModel
 import io.github.yukoba.howoldami.ui.features.thirdpartylicenses.screens.ThirdPartyLicensesScreen
 
 @Composable
 fun App(
     howOldAmIViewModel: HowOldAmIViewModel = viewModel { HowOldAmIViewModel() },
+    thirdPartyLicensesViewModel: ThirdPartyLicensesViewModel = viewModel { ThirdPartyLicensesViewModel() },
     navController: NavHostController = rememberNavController(),
 ) {
     MaterialTheme(
@@ -36,6 +39,9 @@ fun App(
         )
 
         val howOldAmIUiState by howOldAmIViewModel.uiState.collectAsState()
+        val thirdPartyLicensesUiState by thirdPartyLicensesViewModel.uiState.collectAsState()
+
+        val uriHandler = LocalUriHandler.current
 
         Scaffold(
             modifier = Modifier.fillMaxSize(),
@@ -71,7 +77,10 @@ fun App(
                 }
 
                 composable(route = NavigateDestination.ThirdPartyLicenses.name) {
-                    ThirdPartyLicensesScreen()
+                    ThirdPartyLicensesScreen(
+                        thirdPartyLicenses = thirdPartyLicensesUiState.thirdPartyLicenses,
+                        uriHandler = uriHandler,
+                    )
                 }
             }
         }
