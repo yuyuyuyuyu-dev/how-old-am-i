@@ -3,17 +3,15 @@ package io.github.yukoba.howoldami.ui.thirdpartylicenses.screens
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Divider
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ListItem
-import androidx.compose.material.Text
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.UriHandler
 import androidx.compose.ui.text.style.TextDecoration
 import io.github.yukoba.howoldami.data.types.ThirdPartyLicense
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ThirdPartyLicensesScreen(
     thirdPartyLicenses: List<ThirdPartyLicense>,
@@ -25,8 +23,8 @@ fun ThirdPartyLicensesScreen(
     ) {
         for (thirdPartyLicense in thirdPartyLicenses) {
             ListItem(
-                text = { Text(thirdPartyLicense.libraryName) },
-                secondaryText = {
+                headlineContent = { Text(thirdPartyLicense.libraryName) },
+                supportingContent = {
                     Column {
                         Text("")
 
@@ -55,7 +53,7 @@ fun ThirdPartyLicensesScreen(
                 },
             )
 
-            Divider()
+            HorizontalDivider()
         }
     }
 }
