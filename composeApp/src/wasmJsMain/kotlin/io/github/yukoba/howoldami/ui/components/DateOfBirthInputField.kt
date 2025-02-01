@@ -42,6 +42,9 @@ fun DateOfBirthInputField(
                             monthFocusRequester.requestFocus()
                         }
                     },
+                    onEmpty = {
+                        onValueChange(value.copy(year = it))
+                    }
                 )
             },
             modifier = Modifier.width(72.dp),
@@ -56,9 +59,14 @@ fun DateOfBirthInputField(
                     string = newValue,
                     onSuccess = {
                         onValueChange(value.copy(month = it))
-                        if (it.length >= 2) {
+
+                        val month = it.toInt()
+                        if (it.length >= 2 && 1 <= month && month <= 12) {
                             dayFocusRequester.requestFocus()
                         }
+                    },
+                    onEmpty = {
+                        onValueChange(value.copy(month = it))
                     }
                 )
             },
@@ -75,6 +83,9 @@ fun DateOfBirthInputField(
                     onSuccess = {
                         onValueChange(value.copy(day = it))
                     },
+                    onEmpty = {
+                        onValueChange(value.copy(day = it))
+                    }
                 )
             },
             modifier = Modifier.width(72.dp).focusRequester(dayFocusRequester),
