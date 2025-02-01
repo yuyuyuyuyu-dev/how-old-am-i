@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.licensee)
     alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.nodeGradle)
 }
 
 kotlin {
@@ -28,6 +29,10 @@ kotlin {
             }
         }
         binaries.executable()
+        compilations["main"].packageJson {
+//            customField(Pair("script", mapOf("postbuild" to "workbox generateSW kotlin/workbox-config.js")))
+            customField(Pair("script", mapOf("postbuild" to "echo 'arisu' > arisu.txt")))
+        }
     }
 
     sourceSets {
@@ -52,4 +57,12 @@ kotlin {
 licensee {
     allow("Apache-2.0")
     allow("MIT")
+}
+
+tasks.register<Exec>("generateServiceWorker") {
+    dependsOn("npmInstall")
+    inputs.file("workbox-config.js")
+    outputs.file("serviceWorker.js")
+
+    commandLine("npx", "workbox-cli", "generateSW", "workbox-config.js")
 }
