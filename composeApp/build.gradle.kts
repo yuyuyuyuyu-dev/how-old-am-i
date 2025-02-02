@@ -1,3 +1,4 @@
+import com.github.gradle.node.npm.task.NpxTask
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
@@ -59,10 +60,9 @@ licensee {
     allow("MIT")
 }
 
-tasks.register<Exec>("generateServiceWorker") {
-    dependsOn("npmInstall")
-    inputs.file("workbox-config.js")
-    outputs.file("serviceWorker.js")
+tasks.register<NpxTask>("buildPWA") {
+    dependsOn("clean", "npmInstall", "wasmJsBrowserDistribution")
 
-    commandLine("npx", "workbox-cli", "generateSW", "workbox-config.js")
+    command = "workbox-cli"
+    args = listOf("generateSW", "workbox-config.js")
 }

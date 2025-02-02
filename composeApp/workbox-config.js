@@ -4,8 +4,5 @@ module.exports = {
         "**/*",
     ],
     swDest: "build/dist/wasmJs/productionExecutable/serviceWorker.js",
-    runtimeCaching: [{
-        handler: "StaleWhileRevalidate",
-        urlPattern: /.+/,
-    }],
+    maximumFileSizeToCacheInBytes: 10 * 1024 * 1024,
 };
