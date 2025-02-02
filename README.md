@@ -3,7 +3,7 @@
 [![Deploy to GitHub Pages](https://github.com/yu-ko-ba/how-old-am-i/actions/workflows/deploy.yml/badge.svg)](https://how-old-am-i.yuyuyuyuyu.dev)<br />
 <br />
 
-生年月日から年齢を計算するWebアプリです。
+生年月日から年齢を計算するWebアプリ
 
 https://how-old-am-i.yuyuyuyuyu.dev
 
