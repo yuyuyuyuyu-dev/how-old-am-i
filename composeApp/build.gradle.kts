@@ -6,9 +6,9 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.licensee)
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.nodeGradle)
+    alias(libs.plugins.mikepenz.aboutLibraries)
 }
 
 kotlin {
@@ -30,10 +30,6 @@ kotlin {
             }
         }
         binaries.executable()
-        compilations["main"].packageJson {
-//            customField(Pair("script", mapOf("postbuild" to "workbox generateSW kotlin/workbox-config.js")))
-            customField(Pair("script", mapOf("postbuild" to "echo 'arisu' > arisu.txt")))
-        }
     }
 
     sourceSets {
@@ -52,13 +48,10 @@ kotlin {
             implementation(libs.navigation.compose)
             implementation(libs.androidx.lifecycle.viewmodel.compose)
             implementation(libs.kotlinx.serialization.json)
+            implementation(libs.mikepenz.aboutLibraries.core)
+//            implementation(libs.mikepenz.aboutLibraries.compose)
         }
     }
-}
-
-licensee {
-    allow("Apache-2.0")
-    allow("MIT")
 }
 
 tasks.register<NpxTask>("buildPWA") {
@@ -66,4 +59,8 @@ tasks.register<NpxTask>("buildPWA") {
 
     command = "workbox-cli"
     args = listOf("generateSW", "workbox-config.js")
+}
+
+aboutLibraries {
+    registerAndroidTasks = false
 }

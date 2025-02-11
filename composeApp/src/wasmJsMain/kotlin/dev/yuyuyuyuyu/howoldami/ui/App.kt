@@ -1,8 +1,6 @@
 package dev.yuyuyuyuyu.howoldami.ui
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material3.Icon
@@ -25,8 +23,7 @@ import androidx.navigation.compose.rememberNavController
 import dev.yuyuyuyuyu.howoldami.ui.components.TopAppBar
 import dev.yuyuyuyuyu.howoldami.ui.howoldami.HowOldAmIViewModel
 import dev.yuyuyuyuyu.howoldami.ui.howoldami.screens.HowOldAmIScreen
-import dev.yuyuyuyuyu.howoldami.ui.thirdpartylicenses.ThirdPartyLicensesViewModel
-import dev.yuyuyuyuyu.howoldami.ui.thirdpartylicenses.screens.ThirdPartyLicensesScreen
+import dev.yuyuyuyuyu.howoldami.ui.opensourcelicenses.screens.OpenSourceLicensesScreen
 import how_old_am_i.composeapp.generated.resources.Res
 import how_old_am_i.composeapp.generated.resources.Yomogi_Regular
 import org.jetbrains.compose.resources.Font
@@ -34,7 +31,6 @@ import org.jetbrains.compose.resources.Font
 @Composable
 fun App(
     howOldAmIViewModel: HowOldAmIViewModel = viewModel { HowOldAmIViewModel() },
-    thirdPartyLicensesViewModel: ThirdPartyLicensesViewModel = viewModel { ThirdPartyLicensesViewModel() },
     navController: NavHostController = rememberNavController(),
 ) {
     MaterialTheme(
@@ -46,7 +42,6 @@ fun App(
         )
 
         val howOldAmIUiState by howOldAmIViewModel.uiState.collectAsState()
-        val thirdPartyLicensesUiState by thirdPartyLicensesViewModel.uiState.collectAsState()
 
         val uriHandler = LocalUriHandler.current
 
@@ -82,7 +77,6 @@ fun App(
                 startDestination = NavigateDestination.HowOldAmI.name,
                 modifier = Modifier
                     .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
                     .padding(innerPadding)
             ) {
                 composable(route = NavigateDestination.HowOldAmI.name) {
@@ -94,10 +88,7 @@ fun App(
                 }
 
                 composable(route = NavigateDestination.ThirdPartyLicenses.name) {
-                    ThirdPartyLicensesScreen(
-                        thirdPartyLicenses = thirdPartyLicensesUiState.thirdPartyLicenses,
-                        uriHandler = uriHandler,
-                    )
+                    OpenSourceLicensesScreen()
                 }
             }
         }
