@@ -52,6 +52,8 @@ fun App(
                 TopAppBar(
                     title = "年齢の計算",
                     navigateBackIsPossible = navController.previousBackStackEntry != null,
+                    sourceCodeURL = "https://github.com/yu-ko-ba/how-old-am-i",
+                    uriHandler = uriHandler,
                     onNavigateBackButtonClick = {
                         navController.navigateUp()
                     },
