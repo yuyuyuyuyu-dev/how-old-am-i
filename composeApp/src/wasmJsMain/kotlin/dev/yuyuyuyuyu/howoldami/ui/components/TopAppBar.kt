@@ -11,17 +11,19 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopAppBar(
     title: String,
     navigateBackIsPossible: Boolean,
+    openSourceLicensesButtonLabel: @Composable () -> Unit = { Text("オープンソース ライセンス") },
+    sourceCodeButtonLabel: @Composable () -> Unit = { Text("ソースコード") },
     onNavigateBackButtonClick: () -> Unit,
-    onNavigateThirdPartyLicensesButtonClick: () -> Unit,
+    onOpenSourceLicensesButtonClick: () -> Unit,
+    onSourceCodeButtonClick: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
 ) {
-    androidx.compose.material3.TopAppBar(
+    TopAppBar(
         title = { Text(title) },
         modifier = modifier,
         navigationIcon = {
@@ -47,12 +49,21 @@ fun TopAppBar(
                 onDismissRequest = { menuIsExpanded = false },
             ) {
                 DropdownMenuItem(
-                    text = { Text("サードパーティーライセンス") },
+                    text = openSourceLicensesButtonLabel,
                     onClick = {
-                        onNavigateThirdPartyLicensesButtonClick()
+                        onOpenSourceLicensesButtonClick()
                         menuIsExpanded = false
                     },
                 )
+                if (onSourceCodeButtonClick != null) {
+                    DropdownMenuItem(
+                        text = sourceCodeButtonLabel,
+                        onClick = {
+                            onSourceCodeButtonClick()
+                            menuIsExpanded = false
+                        },
+                    )
+                }
             }
         },
     )
