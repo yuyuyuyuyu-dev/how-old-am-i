@@ -50,6 +50,7 @@ kotlin {
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.mikepenz.aboutLibraries.core)
 //            implementation(libs.mikepenz.aboutLibraries.compose)
+            implementation(libs.yuyuyuyuyu.simpletopappbar)
         }
     }
 }

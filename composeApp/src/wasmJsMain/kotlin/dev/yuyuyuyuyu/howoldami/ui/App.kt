@@ -20,10 +20,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import dev.yuyuyuyuyu.howoldami.ui.components.TopAppBar
 import dev.yuyuyuyuyu.howoldami.ui.howoldami.HowOldAmIViewModel
 import dev.yuyuyuyuyu.howoldami.ui.howoldami.screens.HowOldAmIScreen
 import dev.yuyuyuyuyu.howoldami.ui.opensourcelicenses.screens.OpenSourceLicensesScreen
+import dev.yuyuyuyuyu.simpletopappbar.SimpleTopAppBar
 import how_old_am_i.composeapp.generated.resources.Res
 import how_old_am_i.composeapp.generated.resources.Yomogi_Regular
 import org.jetbrains.compose.resources.Font
@@ -48,7 +48,7 @@ fun App(
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
-                TopAppBar(
+                SimpleTopAppBar(
                     title = "年齢の計算",
                     navigateBackIsPossible = navController.previousBackStackEntry != null,
                     sourceCodeButtonLabel = {
