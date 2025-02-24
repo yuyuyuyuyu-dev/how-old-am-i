@@ -10,6 +10,7 @@ kotlinxSerializationJson = "1.8.0"
 nodeGradle = "7.1.0"
 aboutLibraries = "11.6.0-rc01"
 simpleTopAppBar = "0.1.0"
+createTypography = "0.1.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -24,6 +25,7 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 mikepenz-aboutLibraries-core = { group = "com.mikepenz", name = "aboutlibraries-core", version.ref = "aboutLibraries" }
 mikepenz-aboutLibraries-compose = { group = "com.mikepenz", name = "aboutlibraries-compose-m3", version.ref = "aboutLibraries" }
 yuyuyuyuyu-simpletopappbar = { group = "dev.yuyuyuyuyu", name = "simpletopappbar", version.ref = "simpleTopAppBar" }
+yuyuyuyuyu-createtypography = { group = "dev.yuyuyuyuyu", name = "createtypography", version.ref = "createTypography" }
 
 [plugins]
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }

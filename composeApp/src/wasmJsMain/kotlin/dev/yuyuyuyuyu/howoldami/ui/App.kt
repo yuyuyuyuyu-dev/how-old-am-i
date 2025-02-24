@@ -20,6 +20,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import dev.yuyuyuyuyu.createtypography.createTypographyFrom
 import dev.yuyuyuyuyu.howoldami.ui.howoldami.HowOldAmIViewModel
 import dev.yuyuyuyuyu.howoldami.ui.howoldami.screens.HowOldAmIScreen
 import dev.yuyuyuyuyu.howoldami.ui.opensourcelicenses.screens.OpenSourceLicensesScreen
@@ -34,7 +35,7 @@ fun App(
     navController: NavHostController = rememberNavController(),
 ) {
     MaterialTheme(
-        typography = createTypography(fontFamily = FontFamily(Font(Res.font.Yomogi_Regular))),
+        typography = createTypographyFrom(fontFamily = FontFamily(Font(Res.font.Yomogi_Regular))),
     ) {
         val backStackEntry by navController.currentBackStackEntryAsState()
         val currentScreen = NavigateDestination.valueOf(
