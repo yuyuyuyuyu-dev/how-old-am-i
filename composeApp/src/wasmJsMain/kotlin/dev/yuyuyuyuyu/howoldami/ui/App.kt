@@ -1,5 +1,6 @@
 package dev.yuyuyuyuyu.howoldami.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.OpenInNew
@@ -11,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
@@ -45,9 +47,16 @@ fun App(
         val howOldAmIUiState by howOldAmIViewModel.uiState.collectAsState()
 
         val uriHandler = LocalUriHandler.current
+        val focusManager = LocalFocusManager.current
 
         Scaffold(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .clickable(
+                    interactionSource = null,
+                    indication = null,
+                    onClick = { focusManager.clearFocus() },
+                ),
             topBar = {
                 SimpleTopAppBar(
                     title = "年齢の計算",
@@ -85,6 +94,7 @@ fun App(
                         dateOfBirth = howOldAmIUiState.dateOfBirth,
                         age = howOldAmIUiState.age,
                         onDateOfBirthChange = howOldAmIViewModel::onDateOfBirthChange,
+                        focusManager = focusManager,
                     )
                 }
 

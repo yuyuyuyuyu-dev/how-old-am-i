@@ -11,8 +11,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -23,6 +25,7 @@ import dev.yuyuyuyuyu.howoldami.domain.validateIntegerUseCase
 fun DateOfBirthInputField(
     value: DateOfBirth,
     onValueChange: (DateOfBirth) -> Unit,
+    focusManager: FocusManager = LocalFocusManager.current,
 ) {
     val monthFocusRequester = remember { FocusRequester() }
     val dayFocusRequester = remember { FocusRequester() }
@@ -82,6 +85,11 @@ fun DateOfBirthInputField(
                     string = newValue,
                     onSuccess = {
                         onValueChange(value.copy(day = it))
+
+                        val day = it.toInt()
+                        if (it.length >= 2 && 1 <= day && day <= 31) {
+                            focusManager.clearFocus()
+                        }
                     },
                     onEmpty = {
                         onValueChange(value.copy(day = it))
