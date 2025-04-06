@@ -1,4 +1,3 @@
-import com.github.gradle.node.npm.task.NpxTask
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
@@ -7,8 +6,8 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinSerialization)
-    alias(libs.plugins.nodeGradle)
     alias(libs.plugins.mikepenz.aboutLibraries)
+    alias(libs.plugins.yuyuyuyuyu.composePwa)
 }
 
 kotlin {
@@ -54,13 +53,6 @@ kotlin {
             implementation(libs.yuyuyuyuyu.createtypography)
         }
     }
-}
-
-tasks.register<NpxTask>("buildPWA") {
-    dependsOn("clean", "npmInstall", "wasmJsBrowserDistribution")
-
-    command = "workbox-cli"
-    args = listOf("generateSW", "workbox-config.js")
 }
 
 aboutLibraries {

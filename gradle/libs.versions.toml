@@ -7,10 +7,10 @@ datetime = "0.6.1"
 navigation = "2.8.0-alpha10"
 viewModelCompose = "2.8.2"
 kotlinxSerializationJson = "1.8.0"
-nodeGradle = "7.1.0"
 aboutLibraries = "11.6.0-rc01"
 simpleTopAppBar = "0.1.0"
 createTypography = "0.1.0"
+yuyuyuyuyu-composePwa = "0.1.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -32,5 +32,5 @@ composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-mu
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-nodeGradle = { id = "com.github.node-gradle.node", version.ref = "nodeGradle" }
 mikepenz-aboutLibraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "aboutLibraries" }
+yuyuyuyuyu-composePwa = { id = "dev.yuyuyuyuyu.composepwa", version.ref = "yuyuyuyuyu-composePwa" }
