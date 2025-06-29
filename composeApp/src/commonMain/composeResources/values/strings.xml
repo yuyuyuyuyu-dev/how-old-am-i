@@ -1,0 +1,4 @@
+<resources>
+    <string name="please_input_your_date_of_birth">Please input your date of birth</string>
+    <string name="you_are_n_years_old">You are 1%d years old</string>
+</resources>

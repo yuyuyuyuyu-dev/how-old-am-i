@@ -1,10 +1,12 @@
 package dev.yuyuyuyuyu.howoldami.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalUriHandler
 import com.slack.circuit.backstack.rememberSaveableBackStack
 import com.slack.circuit.foundation.CircuitCompositionLocals
@@ -24,6 +26,7 @@ fun HowOldAmIApp() {
     val backStack = rememberSaveableBackStack(root = HowOldAmIScreen)
     val navigator = rememberCircuitNavigator(backStack) {}
 
+    val focusManager = LocalFocusManager.current
     val uriHandler = LocalUriHandler.current
 
     KoinApplication(
@@ -34,6 +37,11 @@ fun HowOldAmIApp() {
     ) {
         MaterialTheme {
             Scaffold(
+                modifier = Modifier.clickable(
+                    interactionSource = null,
+                    indication = null,
+                    onClick = { focusManager.clearFocus() },
+                ),
                 topBar = {
                     SimpleTopAppBar(
                         title = "how-old-am-i",

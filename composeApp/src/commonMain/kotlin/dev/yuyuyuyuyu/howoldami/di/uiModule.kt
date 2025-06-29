@@ -12,10 +12,14 @@ import org.koin.dsl.module
 val uiModule = module {
     single {
         Circuit.Builder()
-            .addUi<HowOldAmIScreen, HowOldAmIScreen.State> { _, modifier ->
-                HowOldAmI(modifier = modifier)
+            .addUi<HowOldAmIScreen, HowOldAmIScreen.State> { state, modifier ->
+                HowOldAmI(state = state, modifier = modifier)
             }
-            .addPresenter<HowOldAmIScreen, HowOldAmIScreen.State>(HowOldAmIPresenter())
+            .addPresenter<HowOldAmIScreen, HowOldAmIScreen.State>(
+                presenter = HowOldAmIPresenter(
+                    calculateAgeUseCase = get(),
+                )
+            )
 
             .addUi<OpenSourceLicenseListScreen, OpenSourceLicenseListScreen.State> { _, modifier ->
                 OpenSourceLicenseList(modifier = modifier)
