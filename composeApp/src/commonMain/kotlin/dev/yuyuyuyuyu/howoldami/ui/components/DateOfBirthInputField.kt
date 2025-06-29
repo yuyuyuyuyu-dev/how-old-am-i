@@ -50,7 +50,7 @@ fun DateOfBirthInputField(
                     return@BaseNumberTextField
                 }
 
-                if (it.toInt() !in 1..12) {
+                if (it.toInt() !in 0..12) {
                     return@BaseNumberTextField
                 }
 
@@ -72,7 +72,7 @@ fun DateOfBirthInputField(
                     return@BaseNumberTextField
                 }
 
-                if (it.toInt() !in 1..31) {
+                if (it.toInt() !in 0..31) {
                     return@BaseNumberTextField
                 }
 
