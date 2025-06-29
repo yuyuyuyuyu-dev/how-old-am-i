@@ -1,0 +1,4 @@
+<resources>
+    <string name="please_input_your_date_of_birth">生年月日を入力してください</string>
+    <string name="you_are_n_years_old">あなたは %1$d歳 です</string>
+</resources>
