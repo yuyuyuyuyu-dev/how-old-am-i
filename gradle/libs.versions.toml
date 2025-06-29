@@ -8,10 +8,9 @@ kotlinx-coroutines = "1.10.2"
 
 koin = "4.1.0"
 circuit = "0.29.0"
-
 simpleTopAppBar = "0.3.1"
-
 aboutLibraries = "12.2.3"
+datetime = "0.7.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -23,10 +22,9 @@ kotlinx-coroutinesSwing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-s
 
 koin-compose = { group = "io.insert-koin", name = "koin-compose", version.ref = "koin" }
 circuit = { group = "com.slack.circuit", name = "circuit-foundation", version.ref = "circuit" }
-
 simpleTopAppBar = { group = "dev.yuyuyuyuyu", name = "simpletopappbar", version.ref = "simpleTopAppBar" }
-
 aboutlibraries-compose-m3 = { module = "com.mikepenz:aboutlibraries-compose-m3", version.ref = "aboutLibraries" }      # Material 3 UI
+kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "datetime" }
 
 [plugins]
 composeHotReload = { id = "org.jetbrains.compose.hot-reload", version.ref = "composeHotReload" }

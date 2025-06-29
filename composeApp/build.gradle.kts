@@ -49,10 +49,9 @@ kotlin {
 
             implementation(libs.koin.compose)
             implementation(libs.circuit)
-
             implementation(libs.simpleTopAppBar)
-
             implementation(libs.aboutlibraries.compose.m3)
+            implementation(libs.kotlinx.datetime)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
