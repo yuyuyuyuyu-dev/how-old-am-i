@@ -8,14 +8,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.text.font.FontFamily
 import com.slack.circuit.backstack.rememberSaveableBackStack
 import com.slack.circuit.foundation.CircuitCompositionLocals
 import com.slack.circuit.foundation.NavigableCircuitContent
 import com.slack.circuit.foundation.rememberCircuitNavigator
+import dev.yuyuyuyuyu.createtypography.createTypographyFrom
 import dev.yuyuyuyuyu.howoldami.di.howOldAmIAppModule
 import dev.yuyuyuyuyu.howoldami.ui.howOldAmI.HowOldAmIScreen
 import dev.yuyuyuyuyu.howoldami.ui.openSourceLicenseList.OpenSourceLicenseListScreen
 import dev.yuyuyuyuyu.simpleTopAppBar.SimpleTopAppBar
+import how_old_am_i.composeapp.generated.resources.Res
+import how_old_am_i.composeapp.generated.resources.Yomogi_Regular
+import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinApplication
 import org.koin.compose.koinInject
@@ -35,7 +40,9 @@ fun HowOldAmIApp() {
             modules(howOldAmIAppModule)
         },
     ) {
-        MaterialTheme {
+        MaterialTheme(
+            typography = createTypographyFrom(FontFamily(Font(Res.font.Yomogi_Regular))),
+        ) {
             Scaffold(
                 modifier = Modifier.clickable(
                     interactionSource = null,

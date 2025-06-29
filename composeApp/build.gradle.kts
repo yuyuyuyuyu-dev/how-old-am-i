@@ -50,6 +50,7 @@ kotlin {
             implementation(libs.koin.compose)
             implementation(libs.circuit)
             implementation(libs.simpleTopAppBar)
+            implementation(libs.createTypography)
             implementation(libs.aboutlibraries.compose.m3)
             implementation(libs.kotlinx.datetime)
         }
