@@ -10,7 +10,7 @@ koin = "4.1.0"
 circuit = "0.29.0"
 simpleTopAppBar = "0.3.1"
 createTypography = "0.1.2"
-composePwa = "0.1.0"
+composePwa = "0.2.0"
 aboutLibraries = "12.2.3"
 datetime = "0.7.0"
 
