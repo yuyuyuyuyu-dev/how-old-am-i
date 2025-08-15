@@ -2,37 +2,37 @@
 androidx-lifecycle = "2.9.1"
 composeHotReload = "1.0.0-alpha11"
 composeMultiplatform = "1.8.2"
-junit = "4.13.2"
 kotlin = "2.2.0"
 kotlinx-coroutines = "1.10.2"
 
 koin = "4.1.0"
 circuit = "0.29.0"
-simpleTopAppBar = "0.3.1"
-createTypography = "0.1.2"
-composePwa = "0.2.1"
 aboutLibraries = "12.2.3"
 datetime = "0.7.0"
 
+myMaterialTheme = "0.3.0"
+simpleTopAppBar = "0.3.1"
+composePwa = "0.3.2"
+
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
-kotlin-testJunit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
-junit = { module = "junit:junit", version.ref = "junit" }
 androidx-lifecycle-viewmodel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-runtimeCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 kotlinx-coroutinesSwing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }
 
 koin-compose = { group = "io.insert-koin", name = "koin-compose", version.ref = "koin" }
 circuit = { group = "com.slack.circuit", name = "circuit-foundation", version.ref = "circuit" }
-simpleTopAppBar = { group = "dev.yuyuyuyuyu", name = "simpletopappbar", version.ref = "simpleTopAppBar" }
-createTypography = { group = "dev.yuyuyuyuyu", name = "createtypography", version.ref = "createTypography" }
 aboutlibraries-compose-m3 = { module = "com.mikepenz:aboutlibraries-compose-m3", version.ref = "aboutLibraries" }      # Material 3 UI
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "datetime" }
+
+yuyuyuyuyu-myMaterialTheme = { group = "dev.yuyuyuyuyu", name = "mymaterialtheme", version.ref = "myMaterialTheme" }
+yuyuyuyuyu-simpleTopAppBar = { group = "dev.yuyuyuyuyu", name = "simpletopappbar", version.ref = "simpleTopAppBar" }
 
 [plugins]
 composeHotReload = { id = "org.jetbrains.compose.hot-reload", version.ref = "composeHotReload" }
 composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "composeMultiplatform" }
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
-composePwa = { id = "dev.yuyuyuyuyu.composepwa", version.ref = "composePwa" }
 aboutLibraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "aboutLibraries" }
+
+yuyuyuyuyu-composePwa = { id = "dev.yuyuyuyuyu.composepwa", version.ref = "composePwa" }

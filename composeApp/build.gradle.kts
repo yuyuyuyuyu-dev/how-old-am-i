@@ -8,8 +8,9 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeHotReload)
 
-    alias(libs.plugins.composePwa)
     alias(libs.plugins.aboutLibraries)
+
+    alias(libs.plugins.yuyuyuyuyu.composePwa)
 }
 
 kotlin {
@@ -54,10 +55,11 @@ kotlin {
 
             implementation(libs.koin.compose)
             implementation(libs.circuit)
-            implementation(libs.simpleTopAppBar)
-            implementation(libs.createTypography)
             implementation(libs.aboutlibraries.compose.m3)
             implementation(libs.kotlinx.datetime)
+
+            implementation(libs.yuyuyuyuyu.myMaterialTheme)
+            implementation(libs.yuyuyuyuyu.simpleTopAppBar)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

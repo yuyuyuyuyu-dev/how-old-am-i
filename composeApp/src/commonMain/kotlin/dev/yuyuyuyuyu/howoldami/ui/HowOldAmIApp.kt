@@ -2,25 +2,20 @@ package dev.yuyuyuyuyu.howoldami.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.text.font.FontFamily
 import com.slack.circuit.backstack.rememberSaveableBackStack
 import com.slack.circuit.foundation.CircuitCompositionLocals
 import com.slack.circuit.foundation.NavigableCircuitContent
 import com.slack.circuit.foundation.rememberCircuitNavigator
-import dev.yuyuyuyuyu.createtypography.createTypographyFrom
 import dev.yuyuyuyuyu.howoldami.di.howOldAmIAppModule
 import dev.yuyuyuyuyu.howoldami.ui.howOldAmI.HowOldAmIScreen
 import dev.yuyuyuyuyu.howoldami.ui.openSourceLicenseList.OpenSourceLicenseListScreen
+import dev.yuyuyuyuyu.mymaterialtheme.MyMaterialTheme
 import dev.yuyuyuyuyu.simpleTopAppBar.SimpleTopAppBar
-import how_old_am_i.composeapp.generated.resources.Res
-import how_old_am_i.composeapp.generated.resources.Yomogi_Regular
-import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinApplication
 import org.koin.compose.koinInject
@@ -40,9 +35,7 @@ fun HowOldAmIApp() {
             modules(howOldAmIAppModule)
         },
     ) {
-        MaterialTheme(
-            typography = createTypographyFrom(FontFamily(Font(Res.font.Yomogi_Regular))),
-        ) {
+        MyMaterialTheme {
             Scaffold(
                 modifier = Modifier.clickable(
                     interactionSource = null,
