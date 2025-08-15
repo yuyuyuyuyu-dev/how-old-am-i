@@ -1,6 +1,6 @@
 {
-  "name": "年齢の計算",
-  "short_name": "年齢の計算",
+  "name": "How old am I",
+  "short_name": "How old",
   "theme_color": "#FFF8F5",
   "background_color": "#FFF8F5",
   "display": "standalone",

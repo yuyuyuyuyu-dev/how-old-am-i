@@ -16,6 +16,10 @@ import dev.yuyuyuyuyu.howoldami.ui.howOldAmI.HowOldAmIScreen
 import dev.yuyuyuyuyu.howoldami.ui.openSourceLicenseList.OpenSourceLicenseListScreen
 import dev.yuyuyuyuyu.mymaterialtheme.MyMaterialTheme
 import dev.yuyuyuyuyu.simpleTopAppBar.SimpleTopAppBar
+import how_old_am_i.composeapp.generated.resources.Res
+import how_old_am_i.composeapp.generated.resources.app_name
+import how_old_am_i.composeapp.generated.resources.open_source_licenses
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinApplication
 import org.koin.compose.koinInject
@@ -25,6 +29,7 @@ import org.koin.compose.koinInject
 fun HowOldAmIApp() {
     val backStack = rememberSaveableBackStack(root = HowOldAmIScreen)
     val navigator = rememberCircuitNavigator(backStack) {}
+    val currentScreen = backStack.topRecord?.screen
 
     val focusManager = LocalFocusManager.current
     val uriHandler = LocalUriHandler.current
@@ -44,7 +49,10 @@ fun HowOldAmIApp() {
                 ),
                 topBar = {
                     SimpleTopAppBar(
-                        title = "how-old-am-i",
+                        title = when (currentScreen) {
+                            is OpenSourceLicenseListScreen -> stringResource(Res.string.open_source_licenses)
+                            else -> stringResource(Res.string.app_name)
+                        },
                         navigateBackIsPossible = backStack.size > 1,
                         onNavigateBackButtonClick = { navigator.pop() },
                         onOpenSourceLicensesButtonClick = {

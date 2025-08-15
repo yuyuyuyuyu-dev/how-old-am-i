@@ -1,4 +1,6 @@
 <resources>
+    <string name="app_name">年齢の計算</string>
+    <string name="open_source_licenses">オープンソース ライセンス</string>
     <string name="please_input_your_date_of_birth">生年月日を入力してください</string>
     <string name="you_are_n_years_old">あなたは %1$d歳 です</string>
 </resources>
