@@ -22,6 +22,8 @@ compose-multiplatform-lifecycle = "2.10.0"
 multiplatform-nav3-ui = "1.1.0"
 kotlinxSerialization = "1.11.0"
 composePwa = "0.6.1"
+myMaterialTheme = "0.4.0"
+simpleTopAppBar = "0.4.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -49,6 +51,8 @@ jetbrains-lifecycle-viewmodelNavigation3 = { module = "org.jetbrains.androidx.li
 jetbrains-material3-adaptiveNavigation3 = { module = "org.jetbrains.compose.material3.adaptive:adaptive-navigation3", version.ref = "compose-multiplatform-adaptive" }
 jetbrains-navigation3-ui = { module = "org.jetbrains.androidx.navigation3:navigation3-ui", version.ref = "multiplatform-nav3-ui" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
+yuyuyuyuyu-myMaterialTheme = { group = "dev.yuyuyuyuyu", name = "mymaterialtheme", version.ref = "myMaterialTheme" }
+yuyuyuyuyu-siimpleTopAppBar = { group = "dev.yuyuyuyuyu", name = "simpletopappbar", version.ref = "myMaterialTheme" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
