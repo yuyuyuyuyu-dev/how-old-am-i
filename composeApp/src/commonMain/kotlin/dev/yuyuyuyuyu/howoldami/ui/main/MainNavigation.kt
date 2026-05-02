@@ -4,11 +4,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.ui.NavDisplay
+import dev.yuyuyuyuyu.howoldami.di.AppComponent
 import dev.yuyuyuyuyu.howoldami.ui.howOldAmI.HowOldAmIScreen
 import dev.yuyuyuyuyu.howoldami.ui.openSourceLicenses.OpenSourceLicensesScreen
 
 @Composable
-fun MainNavigation(backStack: MutableList<MainNavigationRoute>, modifier: Modifier = Modifier) {
+fun MainNavigation(backStack: MutableList<MainNavigationRoute>, component: AppComponent, modifier: Modifier = Modifier) {
     NavDisplay(
         backStack = backStack,
         modifier = modifier,
@@ -16,7 +17,7 @@ fun MainNavigation(backStack: MutableList<MainNavigationRoute>, modifier: Modifi
         entryProvider = { key ->
             when (key) {
                 MainNavigationRoute.HowOldAmI -> NavEntry(key) {
-                    HowOldAmIScreen()
+                    HowOldAmIScreen(viewModel = component.howOldAmIViewModel)
                 }
 
                 MainNavigationRoute.OpenSourceLicenses -> NavEntry(key) {

@@ -4,9 +4,11 @@ import androidx.annotation.IntRange
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import me.tatarka.inject.annotations.Inject
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
+@Inject
 class CalculateAgeUseCase {
     @OptIn(ExperimentalTime::class)
     operator fun invoke(
