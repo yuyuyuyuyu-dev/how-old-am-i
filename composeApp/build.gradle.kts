@@ -45,6 +45,9 @@ kotlin {
             implementation(libs.kotlinx.datetime)
             implementation(libs.aboutlibraries.compose.m3)
             implementation(libs.kotlinInject.runtime)
+            implementation(libs.jetbrains.navigation3.ui)
+            implementation(libs.jetbrains.material3.adaptiveNavigation3)
+            implementation(libs.jetbrains.lifecycle.viewmodelNavigation3)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
