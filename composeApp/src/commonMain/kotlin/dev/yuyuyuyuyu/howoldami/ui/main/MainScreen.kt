@@ -36,7 +36,7 @@ fun MainScreen() {
                     }
                 },
                 onSourceCodeButtonClick = {
-                    uriHandler.openUri("https://github.com/yuyuyuyuyu-dev/portfolio")
+                    uriHandler.openUri("https://github.com/yuyuyuyuyu-dev/how-old-am-i")
                 },
             )
         },
