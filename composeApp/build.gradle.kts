@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.aboutLibraries)
+    alias(libs.plugins.ksp)
 }
 
 kotlin {
@@ -43,6 +44,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.kotlinx.datetime)
             implementation(libs.aboutlibraries.compose.m3)
+            implementation(libs.kotlinInject.runtime)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -79,5 +81,9 @@ android {
 
 dependencies {
     debugImplementation(libs.compose.uiTooling)
+    add("kspCommonMainMetadata", libs.kotlinInject.compiler)
+    add("kspAndroid", libs.kotlinInject.compiler)
+    add("kspJs", libs.kotlinInject.compiler)
+    add("kspWasmJs", libs.kotlinInject.compiler)
 }
 
