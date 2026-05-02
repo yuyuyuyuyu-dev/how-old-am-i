@@ -13,7 +13,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import dev.yuyuyuyuyu.howoldami.ui.models.DateOfBirth
+import dev.yuyuyuyuyu.howoldami.ui.model.DateOfBirth
 
 @Composable
 fun DateOfBirthInputField(
