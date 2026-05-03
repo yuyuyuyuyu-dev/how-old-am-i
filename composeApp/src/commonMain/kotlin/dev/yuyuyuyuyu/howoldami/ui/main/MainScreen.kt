@@ -12,6 +12,10 @@ import androidx.savedstate.compose.serialization.serializers.SnapshotStateListSe
 import dev.yuyuyuyuyu.howoldami.di.AppComponent
 import dev.yuyuyuyuyu.howoldami.di.create
 import dev.yuyuyuyuyu.simpleTopAppBar.SimpleTopAppBar
+import howoldami.composeapp.generated.resources.Res
+import howoldami.composeapp.generated.resources.app_name
+import howoldami.composeapp.generated.resources.open_source_licenses
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun MainScreen() {
@@ -27,7 +31,10 @@ fun MainScreen() {
     Scaffold(
         topBar = {
             SimpleTopAppBar(
-                title = "How old am I",
+                title = when (backStack.lastOrNull()) {
+                    is MainNavigationRoute.OpenSourceLicenses -> stringResource(Res.string.open_source_licenses)
+                    else -> stringResource(Res.string.app_name)
+                },
                 navigateBackIsPossible = backStack.size > 1,
                 onNavigateBackButtonClick = { backStack.removeLastOrNull() },
                 onOpenSourceLicensesButtonClick = {
