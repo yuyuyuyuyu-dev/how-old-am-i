@@ -8,7 +8,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
-import androidx.compose.ui.test.runComposeUiTest
+import androidx.compose.ui.test.v2.runComposeUiTest
 import kotlin.test.Test
 
 class MainScreenTest {
@@ -36,9 +36,6 @@ class MainScreenTest {
             onNodeWithTag("yearInput").performTextInput("1990")
             onNodeWithTag("monthInput").performTextInput("1")
             onNodeWithTag("dayInput").performTextInput("1")
-
-            // Wait a moment for any async processing (if necessary)
-            mainClock.advanceTimeBy(1000L)
 
             // The expected text should appear on the screen
             onNodeWithTag("yearInput").assertTextContains("1990", substring = true)
