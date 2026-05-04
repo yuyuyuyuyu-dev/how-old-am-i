@@ -31,10 +31,11 @@ fun MainScreen() {
     Scaffold(
         topBar = {
             SimpleTopAppBar(
-                title = when (backStack.lastOrNull()) {
-                    is MainNavigationRoute.OpenSourceLicenses -> stringResource(Res.string.open_source_licenses)
-                    else -> stringResource(Res.string.app_name)
-                },
+                title =
+                    when (backStack.lastOrNull()) {
+                        is MainNavigationRoute.OpenSourceLicenses -> stringResource(Res.string.open_source_licenses)
+                        else -> stringResource(Res.string.app_name)
+                    },
                 navigateBackIsPossible = backStack.size > 1,
                 onNavigateBackButtonClick = { backStack.removeLastOrNull() },
                 onOpenSourceLicensesButtonClick = {

@@ -9,21 +9,27 @@ import dev.yuyuyuyuyu.howoldami.ui.howOldAmI.HowOldAmIScreen
 import dev.yuyuyuyuyu.howoldami.ui.openSourceLicenses.OpenSourceLicensesScreen
 
 @Composable
-fun MainNavigation(backStack: MutableList<MainNavigationRoute>, component: AppComponent, modifier: Modifier = Modifier) {
+fun MainNavigation(
+    backStack: MutableList<MainNavigationRoute>,
+    component: AppComponent,
+    modifier: Modifier = Modifier,
+) {
     NavDisplay(
         backStack = backStack,
         modifier = modifier,
         onBack = { backStack.removeLastOrNull() },
         entryProvider = { key ->
             when (key) {
-                MainNavigationRoute.HowOldAmI -> NavEntry(key) {
-                    HowOldAmIScreen(viewModel = component.howOldAmIViewModel)
-                }
+                MainNavigationRoute.HowOldAmI ->
+                    NavEntry(key) {
+                        HowOldAmIScreen(viewModel = component.howOldAmIViewModel)
+                    }
 
-                MainNavigationRoute.OpenSourceLicenses -> NavEntry(key) {
-                    OpenSourceLicensesScreen()
-                }
+                MainNavigationRoute.OpenSourceLicenses ->
+                    NavEntry(key) {
+                        OpenSourceLicensesScreen()
+                    }
             }
-        }
+        },
     )
 }
