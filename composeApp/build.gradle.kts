@@ -27,7 +27,16 @@ kotlin {
 
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
-        browser()
+        browser {
+            testTask {
+                useKarma {
+                    useChromeHeadless()
+                    webpackConfig.cssSupport {
+                        enabled.set(true)
+                    }
+                }
+            }
+        }
         binaries.executable()
     }
 

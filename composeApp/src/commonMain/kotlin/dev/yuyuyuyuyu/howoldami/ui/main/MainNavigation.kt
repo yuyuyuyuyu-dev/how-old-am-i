@@ -20,15 +20,17 @@ fun MainNavigation(
         onBack = { backStack.removeLastOrNull() },
         entryProvider = { key ->
             when (key) {
-                MainNavigationRoute.HowOldAmI ->
+                MainNavigationRoute.HowOldAmI -> {
                     NavEntry(key) {
                         HowOldAmIScreen(viewModel = component.howOldAmIViewModel)
                     }
+                }
 
-                MainNavigationRoute.OpenSourceLicenses ->
+                MainNavigationRoute.OpenSourceLicenses -> {
                     NavEntry(key) {
                         OpenSourceLicensesScreen()
                     }
+                }
             }
         },
     )
