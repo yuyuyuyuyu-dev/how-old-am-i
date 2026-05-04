@@ -9,6 +9,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import dev.yuyuyuyuyu.howoldami.ui.components.DateOfBirthInputField
 import howoldami.composeapp.generated.resources.Res
@@ -39,6 +42,12 @@ fun HowOldAmIScreen(
             onValueChange = viewModel::onDateOfBirthChanged,
         )
 
-        Text(stringResource(Res.string.you_are_n_years_old, uiState.age))
+        Text(
+            text = stringResource(Res.string.you_are_n_years_old, uiState.age),
+            modifier =
+                Modifier
+                    .testTag("ageText")
+                    .semantics { contentDescription = uiState.age },
+        )
     }
 }

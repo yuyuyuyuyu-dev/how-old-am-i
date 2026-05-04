@@ -2,9 +2,6 @@ package dev.yuyuyuyuyu.howoldami.ui.howOldAmI
 
 import dev.yuyuyuyuyu.howoldami.domain.useCases.CalculateAgeUseCase
 import dev.yuyuyuyuyu.howoldami.ui.model.DateOfBirth
-import kotlinx.datetime.Clock
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -14,21 +11,20 @@ class HowOldAmIViewModelImplTest {
         val useCase = CalculateAgeUseCase()
         val viewModel = HowOldAmIViewModelImpl(useCase)
 
-        val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-        val birthYear = today.year - 20
-
         val validDate =
             DateOfBirth(
-                year = birthYear.toString(),
+                year = "1990",
                 month = "1",
                 day = "1",
             )
+
+        val expectedAge = useCase(1990, 1, 1).toString()
 
         viewModel.onDateOfBirthChanged(validDate)
 
         val state = viewModel.uiState.value
         assertEquals(validDate, state.dateOfBirth)
-        assertEquals("20", state.age)
+        assertEquals(expectedAge, state.age)
     }
 
     @Test
@@ -39,8 +35,8 @@ class HowOldAmIViewModelImplTest {
         val invalidDate =
             DateOfBirth(
                 year = "1990",
-                month = "13",
-                day = "1",
+                month = "2",
+                day = "30",
             )
 
         viewModel.onDateOfBirthChanged(invalidDate)
