@@ -17,15 +17,19 @@ import howoldami.composeapp.generated.resources.you_are_n_years_old
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun HowOldAmIScreen(viewModel: HowOldAmIViewModel, modifier: Modifier = Modifier) {
+fun HowOldAmIScreen(
+    viewModel: HowOldAmIViewModel,
+    modifier: Modifier = Modifier,
+) {
     val uiState by viewModel.uiState.collectAsState()
 
     Column(
         modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(
-            16.dp,
-            Alignment.CenterVertically,
-        ),
+        verticalArrangement =
+            Arrangement.spacedBy(
+                16.dp,
+                Alignment.CenterVertically,
+            ),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(stringResource(Res.string.please_input_your_date_of_birth))

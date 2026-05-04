@@ -20,11 +20,12 @@ class CalculateAgeUseCase {
 
         var age = today.year - year
 
-        val birthdayThisYear = LocalDate(
-            year = today.year,
-            month = month,
-            day = day
-        )
+        val birthdayThisYear =
+            LocalDate(
+                year = today.year,
+                month = month,
+                day = day,
+            )
         if (today.date < birthdayThisYear) {
             age -= 1
         }

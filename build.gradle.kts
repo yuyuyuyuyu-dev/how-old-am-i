@@ -6,4 +6,20 @@ plugins {
     alias(libs.plugins.composeMultiplatform) apply false
     alias(libs.plugins.composeCompiler) apply false
     alias(libs.plugins.kotlinMultiplatform) apply false
+    alias(libs.plugins.spotless)
+}
+
+allprojects {
+    apply(plugin = "com.diffplug.spotless")
+    spotless {
+        kotlin {
+            target("**/*.kt")
+            targetExclude("**/build/**/*.kt")
+            ktlint()
+        }
+        kotlinGradle {
+            target("*.gradle.kts")
+            ktlint()
+        }
+    }
 }

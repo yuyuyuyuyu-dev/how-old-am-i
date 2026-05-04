@@ -14,9 +14,10 @@ fun OpenSourceLicensesScreen(modifier: Modifier = Modifier) {
     }
 
     LibrariesContainer(
-        libraries = libraries?.libraries?.distinctBy { it.name }?.let {
-            libraries?.copy(libraries = it)
-        },
+        libraries =
+            libraries?.libraries?.distinctBy { it.name }?.let {
+                libraries?.copy(libraries = it)
+            },
         modifier = modifier,
         showDescription = true,
     )

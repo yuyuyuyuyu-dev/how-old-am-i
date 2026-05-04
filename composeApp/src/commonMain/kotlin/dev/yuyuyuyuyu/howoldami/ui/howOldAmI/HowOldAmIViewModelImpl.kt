@@ -12,14 +12,15 @@ import me.tatarka.inject.annotations.Inject
 @Inject
 class HowOldAmIViewModelImpl(
     private val calculateAgeUseCase: CalculateAgeUseCase,
-) : ViewModel(), HowOldAmIViewModel {
-
-    private val _uiState = MutableStateFlow(
-        HowOldAmIUiState(
-            dateOfBirth = DateOfBirth("", "", ""),
-            age = "",
+) : ViewModel(),
+    HowOldAmIViewModel {
+    private val _uiState =
+        MutableStateFlow(
+            HowOldAmIUiState(
+                dateOfBirth = DateOfBirth("", "", ""),
+                age = "",
+            ),
         )
-    )
     override val uiState: StateFlow<HowOldAmIUiState> = _uiState.asStateFlow()
 
     override fun onDateOfBirthChanged(newValue: DateOfBirth) {

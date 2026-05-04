@@ -66,12 +66,21 @@ kotlin {
 
 android {
     namespace = "dev.yuyuyuyuyu.howoldami"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
+    compileSdk =
+        libs.versions.android.compileSdk
+            .get()
+            .toInt()
 
     defaultConfig {
         applicationId = "dev.yuyuyuyuyu.howoldami"
-        minSdk = libs.versions.android.minSdk.get().toInt()
-        targetSdk = libs.versions.android.targetSdk.get().toInt()
+        minSdk =
+            libs.versions.android.minSdk
+                .get()
+                .toInt()
+        targetSdk =
+            libs.versions.android.targetSdk
+                .get()
+                .toInt()
         versionCode = 1
         versionName = "1.0"
     }
@@ -101,4 +110,3 @@ tasks.withType<KspAATask>().configureEach {
         dependsOn("kspCommonMainKotlinMetadata")
     }
 }
-
