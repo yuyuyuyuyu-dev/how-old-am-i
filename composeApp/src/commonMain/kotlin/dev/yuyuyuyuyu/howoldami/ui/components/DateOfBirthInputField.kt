@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import dev.yuyuyuyuyu.howoldami.ui.model.DateOfBirth
@@ -39,6 +40,7 @@ fun DateOfBirthInputField(
                     monthFocusRequester.requestFocus()
                 }
             },
+            modifier = Modifier.testTag("yearInput"),
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
         )
         Text("/")
@@ -60,7 +62,7 @@ fun DateOfBirthInputField(
                     dayFocusRequester.requestFocus()
                 }
             },
-            modifier = Modifier.focusRequester(monthFocusRequester),
+            modifier = Modifier.focusRequester(monthFocusRequester).testTag("monthInput"),
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
         )
         Text("/")
@@ -82,7 +84,7 @@ fun DateOfBirthInputField(
                     focusManager.clearFocus()
                 }
             },
-            modifier = Modifier.focusRequester(dayFocusRequester),
+            modifier = Modifier.focusRequester(dayFocusRequester).testTag("dayInput"),
             keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
         )
     }
