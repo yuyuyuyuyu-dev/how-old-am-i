@@ -7,10 +7,13 @@ plugins {
     alias(libs.plugins.composeCompiler) apply false
     alias(libs.plugins.kotlinMultiplatform) apply false
     alias(libs.plugins.spotless)
+    alias(libs.plugins.detekt)
 }
 
 allprojects {
     apply(plugin = "com.diffplug.spotless")
+    apply(plugin = "io.gitlab.arturbosch.detekt")
+
     spotless {
         kotlin {
             target("**/*.kt")
@@ -23,3 +26,13 @@ allprojects {
         }
     }
 }
+
+dependencies {
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:${libs.versions.detekt.get()}")
+}
+
+detekt {
+    config.setFrom(file("${project.rootDir}/config/detekt/detekt.yml"))
+    buildUponDefaultConfig = true
+}
+
