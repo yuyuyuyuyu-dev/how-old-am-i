@@ -24,7 +24,7 @@ kotlinxSerialization = "1.11.0"
 composePwa = "0.6.1"
 myMaterialTheme = "0.4.0"
 simpleTopAppBar = "0.4.0"
-spotless = "8.4.0"
+spotless = "8.5.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
