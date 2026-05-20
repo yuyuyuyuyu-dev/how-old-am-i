@@ -25,6 +25,7 @@ composePwa = "0.6.1"
 myMaterialTheme = "0.4.0"
 simpleTopAppBar = "0.4.0"
 spotless = "8.5.1"
+detekt = "1.23.6"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -66,3 +67,4 @@ aboutLibraries = { id = "com.mikepenz.aboutlibraries.plugin", version.ref = "abo
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 composePwa = { id = "dev.yuyuyuyuyu.composepwa", version.ref = "composePwa" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
