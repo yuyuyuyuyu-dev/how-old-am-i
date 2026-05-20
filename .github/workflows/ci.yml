@@ -7,29 +7,56 @@ on:
     branches: [ "main" ]
 
 jobs:
-  check:
-    name: Run checks
+  formatting:
+    name: Check Formatting
     runs-on: ubuntu-latest
     permissions:
       contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-
       - name: Setup JDK
         uses: actions/setup-java@v5
         with:
           java-version: '21'
           distribution: 'jetbrains'
-
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
-
-      - name: Check Formatting (Spotless)
+      - name: Run Spotless
         run: ./gradlew spotlessCheck
 
-      - name: Run Detekt (Static Analysis)
+  linting:
+    name: Static Analysis
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Setup JDK
+        uses: actions/setup-java@v5
+        with:
+          java-version: '21'
+          distribution: 'jetbrains'
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+      - name: Run Detekt
         run: ./gradlew detekt
 
-      - name: Run tests
+  tests:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Setup JDK
+        uses: actions/setup-java@v5
+        with:
+          java-version: '21'
+          distribution: 'jetbrains'
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+      - name: Run Tests
         run: ./gradlew allTests
