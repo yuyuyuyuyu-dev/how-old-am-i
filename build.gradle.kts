@@ -35,4 +35,3 @@ detekt {
     config.setFrom(file("${project.rootDir}/config/detekt/detekt.yml"))
     buildUponDefaultConfig = true
 }
-

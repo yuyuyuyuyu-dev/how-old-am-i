@@ -32,11 +32,12 @@ fun MainScreen() {
     val uriHandler = LocalUriHandler.current
 
     Scaffold(
-        modifier = Modifier.clickable(
-            interactionSource = null,
-            indication = null,
-            onClick = { focusManager.clearFocus() },
-        ),
+        modifier =
+            Modifier.clickable(
+                interactionSource = null,
+                indication = null,
+                onClick = { focusManager.clearFocus() },
+            ),
         topBar = {
             SimpleTopAppBar(
                 title =
