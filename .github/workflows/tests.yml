@@ -25,5 +25,11 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6
 
+      - name: Check Formatting (Spotless)
+        run: ./gradlew spotlessCheck
+
+      - name: Run Detekt (Static Analysis)
+        run: ./gradlew detekt
+
       - name: Run tests
         run: ./gradlew allTests
