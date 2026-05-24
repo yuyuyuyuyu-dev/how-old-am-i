@@ -1,7 +1,7 @@
 # how-old-am-i
 
 [![Deploy](https://github.com/yuyuyuyuyu-dev/how-old-am-i/actions/workflows/deploy.yml/badge.svg)](https://github.com/yuyuyuyuyu-dev/how-old-am-i/actions/workflows/deploy.yml)
-[![Tests](https://github.com/yuyuyuyuyu-dev/how-old-am-i/actions/workflows/tests.yml/badge.svg)](https://github.com/yuyuyuyuyu-dev/how-old-am-i/actions/workflows/tests.yml)
+[![CI](https://github.com/yuyuyuyuyu-dev/how-old-am-i/actions/workflows/ci.yml/badge.svg)](https://github.com/yuyuyuyuyu-dev/how-old-am-i/actions/workflows/ci.yml)
 
 生年月日から年齢を計算するWebアプリ
 
