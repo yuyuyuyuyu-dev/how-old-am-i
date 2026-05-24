@@ -1,4 +1,5 @@
 import com.google.devtools.ksp.gradle.KspAATask
+import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -15,6 +16,12 @@ plugins {
 
 kotlin {
     androidTarget {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_11)
+        }
+    }
+
+    jvm {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
         }
@@ -67,10 +74,25 @@ kotlin {
             implementation(libs.yuyuyuyuyu.myMaterialTheme)
             implementation(libs.yuyuyuyuyu.siimpleTopAppBar)
         }
+        jvmMain.dependencies {
+            implementation(compose.desktop.currentOs)
+        }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
             @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
             implementation(compose.uiTest)
+        }
+    }
+}
+
+compose.desktop {
+    application {
+        mainClass = "dev.yuyuyuyuyu.howoldami.MainKt"
+
+        nativeDistributions {
+            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            packageName = "dev.yuyuyuyuyu.howoldami"
+            packageVersion = "1.0.0"
         }
     }
 }
