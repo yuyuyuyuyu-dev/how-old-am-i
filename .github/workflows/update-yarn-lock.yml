@@ -1,0 +1,78 @@
+name: Update yarn.lock
+
+# Keeps kotlin-js-store/yarn.lock in sync on Dependabot dependency bumps.
+#
+# Why this exists:
+#   The `Run Tests` job (`./gradlew allTests`) runs `:kotlinStoreYarnLock`, which
+#   FAILS when a fresh dependency resolution differs from the committed lock.
+#   A dependency bump (e.g. Kotlin) changes the Gradle cache key, so CI re-resolves
+#   the JS yarn offline mirror from scratch and can pick up newer transitive patch
+#   versions than the committed lock, breaking unrelated Dependabot PRs.
+#
+# This workflow regenerates the lock and pushes it back to the PR branch so the
+# committed lock stays authoritative (instead of silencing the check).
+#
+# One-time setup required:
+#   Create a fine-grained Personal Access Token scoped to THIS repo with
+#   `Contents: Read and write`, and add it as a *Dependabot* secret named
+#   `YARN_LOCK_PAT` (Settings -> Secrets and variables -> Dependabot).
+#   A PAT (not the default GITHUB_TOKEN) is required because pushes made with
+#   GITHUB_TOKEN do not re-trigger CI on the new commit.
+#   Without the secret the job is a no-op (it only warns).
+
+on:
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - "gradle/libs.versions.toml"
+
+# Avoid overlapping auto-updates on the same PR.
+concurrency:
+  group: update-yarn-lock-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  update-yarn-lock:
+    name: Update yarn.lock
+    # Only Dependabot PRs, whose head branches live in this repo and can be pushed to.
+    if: github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Setup JDK
+        uses: actions/setup-java@v5
+        with:
+          java-version: '21'
+          distribution: 'jetbrains'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Regenerate yarn.lock
+        run: ./gradlew kotlinUpgradeYarnLock kotlinWasmUpgradeYarnLock
+
+      - name: Commit and push if changed
+        env:
+          # Exposed only to this step to keep it out of the Gradle build environment.
+          GH_PAT: ${{ secrets.YARN_LOCK_PAT }}
+        run: |
+          if [ -z "$(git status --porcelain kotlin-js-store)" ]; then
+            echo "yarn.lock already up to date - nothing to do."
+            exit 0
+          fi
+          if [ -z "${GH_PAT}" ]; then
+            echo "::warning::kotlin-js-store/yarn.lock is out of date but no YARN_LOCK_PAT secret is configured; skipping auto-commit."
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add kotlin-js-store
+          git commit -m 'build: actualize yarn.lock for dependency bump'
+          git push "https://x-access-token:${GH_PAT}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:${GITHUB_HEAD_REF}"
