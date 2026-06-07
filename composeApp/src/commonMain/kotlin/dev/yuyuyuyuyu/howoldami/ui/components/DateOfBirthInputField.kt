@@ -20,17 +20,15 @@ import dev.yuyuyuyuyu.howoldami.ui.model.DateOfBirth
 fun DateOfBirthInputField(
     value: DateOfBirth,
     onValueChange: (DateOfBirth) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
-    val focusManager = LocalFocusManager.current
-
     val monthFocusRequester = remember { FocusRequester() }
     val dayFocusRequester = remember { FocusRequester() }
 
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalAlignment = Alignment.CenterVertically,
+        verticalAlignment = Alignment.CenterVertically
     ) {
         BaseNumberTextField(
             value = value.year,
@@ -41,51 +39,56 @@ fun DateOfBirthInputField(
                 }
             },
             modifier = Modifier.testTag("yearInput"),
-            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
+            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
         )
         Text("/")
-        BaseNumberTextField(
+        DateSegmentField(
             value = value.month,
-            onValueChange = {
-                if (it == "") {
-                    onValueChange(value.copy(month = it))
-                    return@BaseNumberTextField
-                }
-
-                if (it.toInt() !in 0..12) {
-                    return@BaseNumberTextField
-                }
-
-                onValueChange(value.copy(month = it))
-
-                if (it.length >= 2) {
-                    dayFocusRequester.requestFocus()
-                }
-            },
+            validRange = 0..12,
+            next = dayFocusRequester,
             modifier = Modifier.focusRequester(monthFocusRequester).testTag("monthInput"),
-            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
+            onValueChange = { onValueChange(value.copy(month = it)) }
         )
         Text("/")
-        BaseNumberTextField(
+        DateSegmentField(
             value = value.day,
-            onValueChange = {
-                if (it == "") {
-                    onValueChange(value.copy(day = it))
-                    return@BaseNumberTextField
-                }
-
-                if (it.toInt() !in 0..31) {
-                    return@BaseNumberTextField
-                }
-
-                onValueChange(value.copy(day = it))
-
-                if (it.length >= 2) {
-                    focusManager.clearFocus()
-                }
-            },
+            validRange = 0..31,
+            next = null,
             modifier = Modifier.focusRequester(dayFocusRequester).testTag("dayInput"),
-            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+            onValueChange = { onValueChange(value.copy(day = it)) }
         )
     }
+}
+
+@Composable
+private fun DateSegmentField(
+    value: String,
+    validRange: IntRange,
+    next: FocusRequester?,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val focusManager = LocalFocusManager.current
+
+    BaseNumberTextField(
+        value = value,
+        onValueChange = {
+            when {
+                it == "" -> onValueChange(it)
+
+                it.toInt() !in validRange -> Unit
+
+                else -> {
+                    onValueChange(it)
+                    if (it.length >= 2) {
+                        next?.requestFocus() ?: focusManager.clearFocus()
+                    }
+                }
+            }
+        },
+        modifier = modifier,
+        keyboardOptions = KeyboardOptions.Default.copy(
+            imeAction = if (next != null) ImeAction.Next else ImeAction.Done
+        )
+    )
 }

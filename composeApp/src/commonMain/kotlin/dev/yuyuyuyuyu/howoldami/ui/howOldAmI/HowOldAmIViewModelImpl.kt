@@ -10,16 +10,15 @@ import kotlinx.coroutines.flow.update
 import me.tatarka.inject.annotations.Inject
 
 @Inject
-class HowOldAmIViewModelImpl(
-    private val calculateAgeUseCase: CalculateAgeUseCase,
-) : ViewModel(),
+class HowOldAmIViewModelImpl(private val calculateAgeUseCase: CalculateAgeUseCase) :
+    ViewModel(),
     HowOldAmIViewModel {
     private val _uiState =
         MutableStateFlow(
             HowOldAmIUiState(
                 dateOfBirth = DateOfBirth("", "", ""),
-                age = "",
-            ),
+                age = ""
+            )
         )
     override val uiState: StateFlow<HowOldAmIUiState> = _uiState.asStateFlow()
 
@@ -30,19 +29,24 @@ class HowOldAmIViewModelImpl(
 
     private fun calculateAgeIfPossible(dateOfBirth: DateOfBirth) {
         val year = dateOfBirth.year.toIntOrNull()
-        val month = dateOfBirth.month.toIntOrNull()
-        val day = dateOfBirth.day.toIntOrNull()
+        val month = dateOfBirth.month.toIntOrNull()?.takeIf { it in MONTH_RANGE }
+        val day = dateOfBirth.day.toIntOrNull()?.takeIf { it in DAY_RANGE }
 
-        if (year != null && month != null && month in 1..12 && day != null && day in 1..31) {
+        if (year != null && month != null && day != null) {
             try {
                 val age = calculateAgeUseCase(year, month, day)
                 _uiState.update { it.copy(age = age.toString()) }
-            } catch (e: Exception) {
-                // Invalid date
+            } catch (ignored: IllegalArgumentException) {
+                // Invalid calendar date (e.g. Feb 31): clear the calculated age.
                 _uiState.update { it.copy(age = "") }
             }
         } else {
             _uiState.update { it.copy(age = "") }
         }
+    }
+
+    private companion object {
+        private val MONTH_RANGE = 1..12
+        private val DAY_RANGE = 1..31
     }
 }

@@ -36,13 +36,16 @@ fun MainScreen() {
             Modifier.clickable(
                 interactionSource = null,
                 indication = null,
-                onClick = { focusManager.clearFocus() },
+                onClick = { focusManager.clearFocus() }
             ),
         topBar = {
             SimpleTopAppBar(
                 title =
                     when (backStack.lastOrNull()) {
-                        is MainNavigationRoute.OpenSourceLicenses -> stringResource(Res.string.open_source_licenses)
+                        is MainNavigationRoute.OpenSourceLicenses -> stringResource(
+                            Res.string.open_source_licenses
+                        )
+
                         else -> stringResource(Res.string.app_name)
                     },
                 navigateBackIsPossible = backStack.size > 1,
@@ -54,9 +57,9 @@ fun MainScreen() {
                 },
                 onSourceCodeButtonClick = {
                     uriHandler.openUri("https://github.com/yuyuyuyuyu-dev/how-old-am-i")
-                },
+                }
             )
-        },
+        }
     ) { innerPadding ->
         MainNavigation(backStack, component, Modifier.padding(innerPadding))
     }
