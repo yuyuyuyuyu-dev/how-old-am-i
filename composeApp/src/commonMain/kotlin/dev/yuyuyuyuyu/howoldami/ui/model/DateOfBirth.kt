@@ -5,10 +5,15 @@ import androidx.annotation.IntRange
 data class DateOfBirth(
     @param:IntRange(from = Int.MIN_VALUE.toLong(), to = Int.MAX_VALUE.toLong()) val year: String,
     @param:IntRange(from = 0, to = 12) val month: String,
-    @param:IntRange(from = 0, to = 31) val day: String,
+    @param:IntRange(from = 0, to = 31) val day: String
 ) {
     init {
-        require(month == "" || month.toInt() in 0..12)
-        require(day == "" || day.toInt() in 0..31)
+        require(month == "" || month.toInt() in MONTH_RANGE)
+        require(day == "" || day.toInt() in DAY_RANGE)
+    }
+
+    private companion object {
+        private val MONTH_RANGE = 0..12
+        private val DAY_RANGE = 0..31
     }
 }
