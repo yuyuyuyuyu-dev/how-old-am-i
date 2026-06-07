@@ -1,4 +1,5 @@
 import com.google.devtools.ksp.gradle.KspAATask
+import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
@@ -131,6 +132,15 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+}
+
+// Detekt is configured per-module here (not via the root `allprojects` block) because
+// pointing it at the Kotlin Multiplatform source sets requires this module's `src` tree.
+// Without this, the `detekt` task reports NO-SOURCE and analyzes nothing.
+configure<DetektExtension> {
+    buildUponDefaultConfig = true
+    config.setFrom(rootProject.files("config/detekt/detekt.yml"))
+    source.setFrom("src")
 }
 
 dependencies {
