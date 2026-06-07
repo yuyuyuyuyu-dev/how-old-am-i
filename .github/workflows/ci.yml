@@ -60,3 +60,16 @@ jobs:
         uses: gradle/actions/setup-gradle@v6
       - name: Run Tests
         run: ./gradlew allTests
+
+  build:
+    name: Build Distribution
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      # Runs the exact same build as the deploy job (see .github/actions/build-distribution)
+      # so a broken production build is caught on the pull request, not after merging to main.
+      - name: Build distribution
+        uses: ./.github/actions/build-distribution
