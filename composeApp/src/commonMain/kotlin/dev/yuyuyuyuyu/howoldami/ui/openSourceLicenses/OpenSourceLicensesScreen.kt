@@ -19,6 +19,6 @@ fun OpenSourceLicensesScreen(modifier: Modifier = Modifier) {
                 libraries?.copy(libraries = it)
             },
         modifier = modifier,
-        showDescription = true,
+        showDescription = true
     )
 }

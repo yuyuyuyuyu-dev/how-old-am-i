@@ -20,10 +20,7 @@ import howoldami.composeapp.generated.resources.you_are_n_years_old
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun HowOldAmIScreen(
-    viewModel: HowOldAmIViewModel,
-    modifier: Modifier = Modifier,
-) {
+fun HowOldAmIScreen(viewModel: HowOldAmIViewModel, modifier: Modifier = Modifier) {
     val uiState by viewModel.uiState.collectAsState()
 
     Column(
@@ -31,15 +28,15 @@ fun HowOldAmIScreen(
         verticalArrangement =
             Arrangement.spacedBy(
                 16.dp,
-                Alignment.CenterVertically,
+                Alignment.CenterVertically
             ),
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(stringResource(Res.string.please_input_your_date_of_birth))
 
         DateOfBirthInputField(
             value = uiState.dateOfBirth,
-            onValueChange = viewModel::onDateOfBirthChanged,
+            onValueChange = viewModel::onDateOfBirthChanged
         )
 
         Text(
@@ -47,7 +44,7 @@ fun HowOldAmIScreen(
             modifier =
                 Modifier
                     .testTag("ageText")
-                    .semantics { contentDescription = uiState.age },
+                    .semantics { contentDescription = uiState.age }
         )
     }
 }

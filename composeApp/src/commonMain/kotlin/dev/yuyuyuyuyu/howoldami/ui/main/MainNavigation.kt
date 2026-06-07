@@ -12,7 +12,7 @@ import dev.yuyuyuyuyu.howoldami.ui.openSourceLicenses.OpenSourceLicensesScreen
 fun MainNavigation(
     backStack: MutableList<MainNavigationRoute>,
     component: AppComponent,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     NavDisplay(
         backStack = backStack,
@@ -32,6 +32,6 @@ fun MainNavigation(
                     }
                 }
             }
-        },
+        }
     )
 }

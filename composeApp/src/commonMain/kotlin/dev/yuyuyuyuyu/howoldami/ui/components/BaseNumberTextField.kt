@@ -17,7 +17,7 @@ fun BaseNumberTextField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = LocalTextStyle.current,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default
 ) = TextField(
     value = value,
     onValueChange = {
@@ -29,5 +29,5 @@ fun BaseNumberTextField(
     },
     modifier = modifier.width(72.dp),
     textStyle = textStyle.copy(textAlign = TextAlign.Center),
-    keyboardOptions = keyboardOptions.copy(keyboardType = KeyboardType.Number),
+    keyboardOptions = keyboardOptions.copy(keyboardType = KeyboardType.Number)
 )

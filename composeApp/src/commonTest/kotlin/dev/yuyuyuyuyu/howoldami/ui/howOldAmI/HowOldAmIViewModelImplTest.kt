@@ -15,7 +15,7 @@ class HowOldAmIViewModelImplTest {
             DateOfBirth(
                 year = "1990",
                 month = "1",
-                day = "1",
+                day = "1"
             )
 
         val expectedAge = useCase(1990, 1, 1).toString()
@@ -36,7 +36,7 @@ class HowOldAmIViewModelImplTest {
             DateOfBirth(
                 year = "1990",
                 month = "2",
-                day = "30",
+                day = "30"
             )
 
         viewModel.onDateOfBirthChanged(invalidDate)
