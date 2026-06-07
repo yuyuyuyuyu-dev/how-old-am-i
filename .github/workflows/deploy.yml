@@ -2,7 +2,7 @@ name: Deploy
 
 on:
   workflow_run:
-    workflows: [ Tests ]
+    workflows: [ CI ]
     types: [ completed ]
     branches: [ main ]
 
@@ -22,20 +22,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Setup JDK
-        uses: actions/setup-java@v5
-        with:
-          java-version: '21'
-          distribution: 'jetbrains'
-
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v6
-
-      - name: Export Library Definitions
-        run: ./gradlew :composeApp:exportLibraryDefinitions -PaboutLibraries.exportPath=src/commonMain/composeResources/files/
-
-      - name: Build
-        run: ./gradlew :composeApp:wasmJsBrowserDistribution
+      # Shared with the CI build check (see .github/actions/build-distribution) so
+      # deploy and CI always run the exact same build.
+      - name: Build distribution
+        uses: ./.github/actions/build-distribution
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
