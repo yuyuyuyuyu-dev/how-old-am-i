@@ -6,7 +6,6 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.aboutLibraries)
@@ -16,12 +15,6 @@ plugins {
 }
 
 kotlin {
-    androidTarget {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
-        }
-    }
-
     jvm {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
@@ -52,10 +45,6 @@ kotlin {
         commonMain {
             kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
         }
-        androidMain.dependencies {
-            implementation(libs.compose.uiToolingPreview)
-            implementation(libs.androidx.activity.compose)
-        }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
@@ -83,6 +72,15 @@ kotlin {
             @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
             implementation(compose.uiTest)
         }
+
+        // Compose UI tests (runComposeUiTest) only run where the Skiko-backed test
+        // harness exists: jvm (desktop) and wasmJs. They fail on the js (ReferenceError)
+        // and Android-unit-test targets, so they cannot live in commonTest. This shared
+        // source set runs them on jvm locally (fast) and wasmJs in CI (production parity).
+        val jvmWasmJsTest by creating
+        jvmWasmJsTest.dependsOn(commonTest.get())
+        jvmTest.get().dependsOn(jvmWasmJsTest)
+        wasmJsTest.get().dependsOn(jvmWasmJsTest)
     }
 }
 
@@ -98,42 +96,6 @@ compose.desktop {
     }
 }
 
-android {
-    namespace = "dev.yuyuyuyuyu.howoldami"
-    compileSdk =
-        libs.versions.android.compileSdk
-            .get()
-            .toInt()
-
-    defaultConfig {
-        applicationId = "dev.yuyuyuyuyu.howoldami"
-        minSdk =
-            libs.versions.android.minSdk
-                .get()
-                .toInt()
-        targetSdk =
-            libs.versions.android.targetSdk
-                .get()
-                .toInt()
-        versionCode = 1
-        versionName = "1.0"
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-        }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-}
-
 // Detekt is configured per-module here (not via the root `allprojects` block) because
 // pointing it at the Kotlin Multiplatform source sets requires this module's `src` tree.
 // Without this, the `detekt` task reports NO-SOURCE and analyzes nothing.
@@ -144,7 +106,6 @@ configure<DetektExtension> {
 }
 
 dependencies {
-    debugImplementation(libs.compose.uiTooling)
     kspCommonMainMetadata(libs.kotlinInject.compiler)
 }
 
