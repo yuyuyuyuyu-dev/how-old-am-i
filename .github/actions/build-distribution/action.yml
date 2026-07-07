@@ -10,8 +10,8 @@ runs:
     - name: Setup JDK
       uses: actions/setup-java@v5
       with:
-        java-version: '21'
-        distribution: 'jetbrains'
+        java-version: "21"
+        distribution: "jetbrains"
 
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v6

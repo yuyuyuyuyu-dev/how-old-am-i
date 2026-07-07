@@ -2,9 +2,9 @@ name: Dependabot
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   dependabot:
@@ -19,8 +19,8 @@ jobs:
       - name: Setup JDK
         uses: actions/setup-java@v5
         with:
-          java-version: '21'
-          distribution: 'jetbrains'
+          java-version: "21"
+          distribution: "jetbrains"
 
       - name: Send dependencies to Dependabot
         uses: gradle/actions/dependency-submission@v6
