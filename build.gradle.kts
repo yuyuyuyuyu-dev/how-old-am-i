@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform) apply false
     alias(libs.plugins.spotless)
     alias(libs.plugins.detekt)
+    alias(libs.plugins.versionCatalogUpdate)
 }
 
 allprojects {
@@ -28,4 +29,12 @@ allprojects {
 detekt {
     config.setFrom(file("${project.rootDir}/config/detekt/detekt.yml"))
     buildUponDefaultConfig = true
+}
+
+// Gradle has no built-in formatter for version catalogs and Spotless does not
+// cover them yet, so this plugin is what keeps libs.versions.toml diffs small
+// and review-focused instead of leaving entry order to manual bikeshedding.
+versionCatalogUpdate {
+    // Deterministic ordering so unrelated dependency edits don't collide.
+    sortByKey = true
 }
