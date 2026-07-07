@@ -22,7 +22,7 @@ name: Update yarn.lock
 
 on:
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
     paths:
       - "gradle/libs.versions.toml"
 
@@ -49,8 +49,8 @@ jobs:
       - name: Setup JDK
         uses: actions/setup-java@v5
         with:
-          java-version: '21'
-          distribution: 'jetbrains'
+          java-version: "21"
+          distribution: "jetbrains"
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v6

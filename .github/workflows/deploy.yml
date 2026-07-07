@@ -2,9 +2,9 @@ name: Deploy
 
 on:
   workflow_run:
-    workflows: [ CI ]
-    types: [ completed ]
-    branches: [ main ]
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
 
 jobs:
   deploy:
@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pages: write    # to deploy to Pages
+      pages: write # to deploy to Pages
       id-token: write # to verify the deployment originates from an appropriate source
     environment:
       name: github-pages

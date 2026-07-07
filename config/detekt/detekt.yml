@@ -6,12 +6,12 @@
 naming:
   FunctionNaming:
     # Jetpack Compose functions use PascalCase by design.
-    ignoreAnnotated: ['Composable', 'Preview']
+    ignoreAnnotated: ["Composable", "Preview"]
     # The default test excludes enumerate the test source sets but miss
     # `wasmJsTest`; this pattern covers every test source set instead.
-    excludes: ['**/test/**', '**/*Test/**']
+    excludes: ["**/test/**", "**/*Test/**"]
 
 style:
   MagicNumber:
     # Same `wasmJsTest` gap as above; do not flag literals in test code.
-    excludes: ['**/test/**', '**/*Test/**']
+    excludes: ["**/test/**", "**/*Test/**"]
