@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform) apply false
     alias(libs.plugins.spotless)
     alias(libs.plugins.detekt)
+    alias(libs.plugins.versionCatalogUpdate)
 }
 
 allprojects {
@@ -28,4 +29,11 @@ allprojects {
 detekt {
     config.setFrom(file("${project.rootDir}/config/detekt/detekt.yml"))
     buildUponDefaultConfig = true
+}
+
+// Keeps gradle/libs.versions.toml consistently sorted and formatted.
+// Run `./gradlew versionCatalogFormat` to apply the canonical layout;
+// CI runs the same task and fails if the file is not already formatted.
+versionCatalogUpdate {
+    sortByKey = true
 }

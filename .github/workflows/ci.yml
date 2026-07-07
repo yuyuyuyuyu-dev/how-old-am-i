@@ -24,6 +24,13 @@ jobs:
         uses: gradle/actions/setup-gradle@v6
       - name: Run Spotless
         run: ./gradlew spotlessCheck
+      - name: Check version catalog formatting
+        # `versionCatalogFormat` rewrites gradle/libs.versions.toml in place, so a
+        # dirty working tree afterwards means the committed catalog was not formatted.
+        # Run `./gradlew versionCatalogFormat` locally and commit the result to fix.
+        run: |
+          ./gradlew versionCatalogFormat
+          git diff --exit-code gradle/libs.versions.toml
 
   linting:
     name: Static Analysis
