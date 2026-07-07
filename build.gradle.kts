@@ -26,6 +26,26 @@ allprojects {
     }
 }
 
+// Prettier handles the file types ktlint does not: Markdown, YAML, JSON, JS,
+// CSS and HTML. It is configured once on the root project (rather than per
+// subproject) so the whole repository is covered by a single Node/Prettier run,
+// and it is left on Prettier's defaults so there is no house style to maintain.
+spotless {
+    format("prettier") {
+        target(
+            "**/*.md",
+            "**/*.yml",
+            "**/*.yaml",
+            "**/*.json",
+            "**/*.js",
+            "**/*.css",
+            "**/*.html"
+        )
+        targetExclude("**/build/**", "**/node_modules/**")
+        prettier()
+    }
+}
+
 detekt {
     config.setFrom(file("${project.rootDir}/config/detekt/detekt.yml"))
     buildUponDefaultConfig = true
