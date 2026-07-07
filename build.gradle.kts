@@ -31,9 +31,10 @@ detekt {
     buildUponDefaultConfig = true
 }
 
-// Keeps gradle/libs.versions.toml consistently sorted and formatted.
-// Run `./gradlew versionCatalogFormat` to apply the canonical layout;
-// CI runs the same task and fails if the file is not already formatted.
+// Gradle has no built-in formatter for version catalogs and Spotless does not
+// cover them yet, so this plugin is what keeps libs.versions.toml diffs small
+// and review-focused instead of leaving entry order to manual bikeshedding.
 versionCatalogUpdate {
+    // Deterministic ordering so unrelated dependency edits don't collide.
     sortByKey = true
 }
