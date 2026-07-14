@@ -1,6 +1,6 @@
 [versions]
 aboutLibraries = "15.0.3"
-androidx-lifecycle = "2.11.0-rc01"
+androidx-lifecycle = "2.11.0"
 compose-multiplatform-adaptive = "1.3.0-beta02"
 compose-multiplatform-lifecycle = "2.11.0-rc01"
 composeMultiplatform = "1.12.0-beta01"
