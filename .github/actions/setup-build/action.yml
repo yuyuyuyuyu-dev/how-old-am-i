@@ -1,0 +1,23 @@
+name: Setup build
+description: >
+  Sets up the JDK and Gradle toolchain shared by every job that runs Gradle in
+  this repository, so the toolchain is configured identically everywhere.
+
+runs:
+  using: composite
+  steps:
+    - name: Setup JDK
+      uses: actions/setup-java@v5
+      with:
+        java-version: "21"
+        distribution: "jetbrains"
+      # The JetBrains distribution resolves its version by paging through the
+      # JetBrainsRuntime releases via the GitHub API, and reads the credential
+      # from $GITHUB_TOKEN rather than the action's `token` input. Without this
+      # the requests are anonymous and share the 60 req/hour/IP limit with every
+      # other runner on the same address, which intermittently fails the job.
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+
+    - name: Setup Gradle
+      uses: gradle/actions/setup-gradle@v6

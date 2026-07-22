@@ -16,11 +16,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
+      # Not ./.github/actions/setup-build: dependency-submission sets Gradle up
+      # itself, so this job needs the JDK alone. See that action for why the
+      # JetBrains distribution needs GITHUB_TOKEN.
       - name: Setup JDK
         uses: actions/setup-java@v5
         with:
           java-version: "21"
           distribution: "jetbrains"
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
 
       - name: Send dependencies to Dependabot
         uses: gradle/actions/dependency-submission@v6
