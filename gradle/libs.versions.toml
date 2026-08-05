@@ -16,7 +16,7 @@ multiplatform-nav3-ui = "1.1.1"
 myMaterialTheme = "0.4.0"
 simpleTopAppBar = "0.4.0"
 spotless = "8.8.0"
-versionCatalogUpdate = "1.1.0"
+versionCatalogUpdate = "1.1.1"
 
 [libraries]
 aboutlibraries-compose-m3 = { module = "com.mikepenz:aboutlibraries-compose-m3", version.ref = "aboutLibraries" }
