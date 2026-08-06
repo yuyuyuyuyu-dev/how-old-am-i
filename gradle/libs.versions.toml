@@ -15,7 +15,7 @@ material3 = "1.12.0-alpha03"
 multiplatform-nav3-ui = "1.1.1"
 myMaterialTheme = "0.4.0"
 simpleTopAppBar = "0.4.0"
-spotless = "8.8.0"
+spotless = "8.9.0"
 versionCatalogUpdate = "1.1.1"
 
 [libraries]
