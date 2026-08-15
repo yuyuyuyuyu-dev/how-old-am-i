@@ -2,65 +2,51 @@ package dev.yuyuyuyuyu.howoldami.ui.main
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSerializable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.savedstate.compose.serialization.serializers.SnapshotStateListSerializer
+import com.mikepenz.aboutlibraries.ui.compose.produceLibraries
 import dev.yuyuyuyuyu.howoldami.di.AppComponent
 import dev.yuyuyuyuyu.howoldami.di.create
-import dev.yuyuyuyuyu.simpleTopAppBar.SimpleTopAppBar
+import dev.yuyuyuyuyu.howoldami.ui.howOldAmI.HowOldAmIScreen
+import dev.yuyuyuyuyu.mycomposables.MyScaffold
 import howoldami.composeapp.generated.resources.Res
 import howoldami.composeapp.generated.resources.app_name
-import howoldami.composeapp.generated.resources.open_source_licenses
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun MainScreen() {
     val component = remember { AppComponent::class.create() }
 
-    val backStack: MutableList<MainNavigationRoute> =
-        rememberSerializable(serializer = SnapshotStateListSerializer()) {
-            mutableStateListOf(MainNavigationRoute.HowOldAmI)
-        }
-
     val focusManager = LocalFocusManager.current
     val uriHandler = LocalUriHandler.current
 
-    Scaffold(
+    val libraries by produceLibraries {
+        Res.readBytes("files/aboutlibraries.json").decodeToString()
+    }
+
+    MyScaffold(
+        title = stringResource(Res.string.app_name),
+        libraries =
+            libraries?.libraries?.distinctBy { it.name }?.let {
+                libraries?.copy(libraries = it)
+            },
         modifier =
             Modifier.clickable(
                 interactionSource = null,
                 indication = null,
                 onClick = { focusManager.clearFocus() }
             ),
-        topBar = {
-            SimpleTopAppBar(
-                title =
-                    when (backStack.lastOrNull()) {
-                        is MainNavigationRoute.OpenSourceLicenses -> stringResource(
-                            Res.string.open_source_licenses
-                        )
-
-                        else -> stringResource(Res.string.app_name)
-                    },
-                navigateBackIsPossible = backStack.size > 1,
-                onNavigateBackButtonClick = { backStack.removeLastOrNull() },
-                onOpenSourceLicensesButtonClick = {
-                    if (backStack.lastOrNull() != MainNavigationRoute.OpenSourceLicenses) {
-                        backStack.add(MainNavigationRoute.OpenSourceLicenses)
-                    }
-                },
-                onSourceCodeButtonClick = {
-                    uriHandler.openUri("https://github.com/yuyuyuyuyu-dev/how-old-am-i")
-                }
-            )
+        onSourceCodeButtonClick = {
+            uriHandler.openUri("https://github.com/yuyuyuyuyu-dev/how-old-am-i")
         }
     ) { innerPadding ->
-        MainNavigation(backStack, component, Modifier.padding(innerPadding))
+        HowOldAmIScreen(
+            viewModel = component.howOldAmIViewModel,
+            modifier = Modifier.padding(innerPadding)
+        )
     }
 }

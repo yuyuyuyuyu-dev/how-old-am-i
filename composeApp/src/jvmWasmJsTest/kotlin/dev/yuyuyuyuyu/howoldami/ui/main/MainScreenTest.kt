@@ -4,11 +4,11 @@ import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.hasContentDescription
-import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.v2.runComposeUiTest
+import dev.yuyuyuyuyu.mycomposables.SimpleTopAppBarTestTags
 import kotlin.test.Test
 
 class MainScreenTest {
@@ -45,7 +45,11 @@ class MainScreenTest {
         onNode(hasContentDescription(expectedAge)).assertExists()
 
         // 3. Test Navigation to Open Source Licenses
-        // Click the menu icon
-        onNodeWithContentDescription("menu").performClick()
+        onNodeWithTag(SimpleTopAppBarTestTags.MENU_BUTTON).performClick()
+        onNodeWithTag(SimpleTopAppBarTestTags.OPEN_SOURCE_LICENSES_BUTTON).performClick()
+
+        // The licenses screen is the second entry on the back stack, so the app
+        // bar now offers a way back
+        onNodeWithTag(SimpleTopAppBarTestTags.NAVIGATE_BACK_BUTTON).assertIsDisplayed()
     }
 }
