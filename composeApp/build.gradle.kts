@@ -14,21 +14,10 @@ plugins {
 }
 
 kotlin {
-    // The custom .dependsOn() wiring below (jvmWasmJsTest) stops Kotlin from applying
-    // the default hierarchy template automatically, which silently drops the webMain
-    // source set — and with it src/webMain/resources (index.html, the PWA assets) and
-    // the web Main.kt. Apply the template explicitly so webMain keeps existing.
-    applyDefaultHierarchyTemplate()
-
     jvm {
         compilerOptions {
             jvmTarget.set(JvmTarget.JVM_11)
         }
-    }
-
-    js {
-        browser()
-        binaries.executable()
     }
 
     @OptIn(ExperimentalWasmDsl::class)
@@ -74,15 +63,6 @@ kotlin {
             @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
             implementation(compose.uiTest)
         }
-
-        // Compose UI tests (runComposeUiTest) only run where the Skiko-backed test
-        // harness exists: jvm (desktop) and wasmJs. They fail on the js (ReferenceError)
-        // and Android-unit-test targets, so they cannot live in commonTest. This shared
-        // source set runs them on jvm locally (fast) and wasmJs in CI (production parity).
-        val jvmWasmJsTest by creating
-        jvmWasmJsTest.dependsOn(commonTest.get())
-        jvmTest.get().dependsOn(jvmWasmJsTest)
-        wasmJsTest.get().dependsOn(jvmWasmJsTest)
     }
 }
 

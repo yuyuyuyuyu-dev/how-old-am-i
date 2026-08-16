@@ -12,13 +12,13 @@ plugins {
     alias(libs.plugins.versionCatalogUpdate)
 }
 
-// The js and wasmJs targets each register their own npm install and tooling
-// setup task on the root project, and nothing orders them against each other,
-// so Gradle is free to run them at the same time. They all shell out to yarn,
-// which serialises concurrent invocations behind one global mutex — that is the
-// recurring "Waiting for the other yarn instance to finish (<pid>)" in CI logs.
-// A loser of that race can return without having installed its workspace, and
-// jsBrowserTest then fails with
+// The npm install and tooling setup tasks land on the root project, and nothing
+// orders them against each other, so Gradle is free to run them at the same
+// time. They all shell out to yarn, which serialises concurrent invocations
+// behind one global mutex — that is the recurring "Waiting for the other yarn
+// instance to finish (<pid>)" in CI logs. A loser of that race can return
+// without having installed its workspace, and the browser test task then fails
+// with
 //   Cannot find node module "kotlin-web-helpers/dist/kotlin-test-karma-runner.js"
 // because build/js/packages/*-test was never populated. Letting yarn arbitrate
 // is what makes this flaky, so hand every yarn-invoking task a build service
