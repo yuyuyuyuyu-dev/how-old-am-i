@@ -1,12 +1,12 @@
 name: Update yarn.lock
 
-# Keeps kotlin-js-store/yarn.lock in sync on Dependabot dependency bumps.
+# Keeps kotlin-js-store/wasm/yarn.lock in sync on Dependabot dependency bumps.
 #
 # Why this exists:
-#   The `Run Tests` job (`./gradlew allTests`) runs `:kotlinStoreYarnLock`, which
+#   The `Run Tests` job (`./gradlew allTests`) runs `:kotlinWasmStoreYarnLock`, which
 #   FAILS when a fresh dependency resolution differs from the committed lock.
 #   A dependency bump (e.g. Kotlin) changes the Gradle cache key, so CI re-resolves
-#   the JS yarn offline mirror from scratch and can pick up newer transitive patch
+#   the yarn offline mirror from scratch and can pick up newer transitive patch
 #   versions than the committed lock, breaking unrelated Dependabot PRs.
 #
 # This workflow regenerates the lock and pushes it back to the PR branch so the
@@ -50,7 +50,7 @@ jobs:
         uses: ./.github/actions/setup-build
 
       - name: Regenerate yarn.lock
-        run: ./gradlew kotlinUpgradeYarnLock kotlinWasmUpgradeYarnLock
+        run: ./gradlew kotlinWasmUpgradeYarnLock
 
       - name: Commit and push if changed
         env:
@@ -62,7 +62,7 @@ jobs:
             exit 0
           fi
           if [ -z "${GH_PAT}" ]; then
-            echo "::warning::kotlin-js-store/yarn.lock is out of date but no YARN_LOCK_PAT secret is configured; skipping auto-commit."
+            echo "::warning::kotlin-js-store/wasm/yarn.lock is out of date but no YARN_LOCK_PAT secret is configured; skipping auto-commit."
             exit 0
           fi
           git config user.name 'github-actions[bot]'
