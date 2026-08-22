@@ -1,22 +1,5 @@
 name: Dependabot auto-merge
 
-# Squash-merges Dependabot's minor and patch updates once the required CI checks pass.
-#
-# Why a GitHub App instead of GITHUB_TOKEN:
-#   The merge commit is attributed to whoever enabled auto-merge, and a push
-#   attributed to GITHUB_TOKEN does not trigger workflows. Merging with
-#   GITHUB_TOKEN would therefore skip the CI run on main that Deploy waits for,
-#   so the app would never be released.
-#
-# One-time setup required:
-#   1. Settings -> General -> Pull Requests: tick "Allow auto-merge".
-#   2. Install a GitHub App on this repository with `Contents: Read and write`
-#      and `Pull requests: Read and write`, then add its client ID and private key
-#      as *Dependabot* secrets named `PR_BOT_CLIENT_ID` and `PR_BOT_PRIVATE_KEY`
-#      (Settings -> Secrets and variables -> Dependabot). They must be Dependabot
-#      secrets rather than Actions secrets, which Dependabot-triggered runs cannot read.
-#      Without the secrets the job is a no-op (it only warns).
-
 on:
   pull_request:
     branches: ["main"]
@@ -35,34 +18,23 @@ jobs:
         id: metadata
         uses: dependabot/fetch-metadata@v3
 
-      # `update-type` is the highest semver bump across the whole pull request, so a
-      # grouped update is merged only when every dependency in it is minor or patch.
-      - name: Check for GitHub App credentials
-        id: credentials
-        if: contains(fromJSON('["version-update:semver-minor", "version-update:semver-patch"]'), steps.metadata.outputs.update-type)
-        env:
-          CLIENT_ID: ${{ secrets.PR_BOT_CLIENT_ID }}
-        run: |
-          if [ -z "${CLIENT_ID}" ]; then
-            echo "::warning::No PR_BOT_CLIENT_ID Dependabot secret configured; skipping auto-merge."
-            echo "configured=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "configured=true" >> "$GITHUB_OUTPUT"
-          fi
-
-      # Pinned to an exact version, not @v3: actionlint's bundled metadata for the
-      # @v3 tag was snapshotted from v3.0.0, before `client-id` replaced the now
-      # deprecated `app-id`, so it rejects `client-id` on the floating tag.
+      # A GitHub App rather than GITHUB_TOKEN: the merge is attributed to whoever
+      # enabled auto-merge, and a push attributed to GITHUB_TOKEN triggers no
+      # workflows, so it would skip the CI run on main that Deploy waits for.
+      #
+      # Pinned rather than @v3: actionlint's metadata for the @v3 tag predates
+      # `client-id` superseding `app-id`, and its lookup is an exact match on the ref.
       - name: Create GitHub App token
         id: app-token
-        if: steps.credentials.outputs.configured == 'true'
         uses: actions/create-github-app-token@v3.2.0
         with:
           client-id: ${{ secrets.PR_BOT_CLIENT_ID }}
           private-key: ${{ secrets.PR_BOT_PRIVATE_KEY }}
 
+      # `update-type` is the highest semver bump in the pull request, so a group is
+      # merged only when every dependency in it is minor or patch.
       - name: Enable auto-merge
-        if: steps.credentials.outputs.configured == 'true'
+        if: contains(fromJSON('["version-update:semver-minor", "version-update:semver-patch"]'), steps.metadata.outputs.update-type)
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
           PR_URL: ${{ github.event.pull_request.html_url }}
