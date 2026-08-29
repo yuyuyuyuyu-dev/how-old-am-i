@@ -20,7 +20,7 @@ jobs:
       # itself, so this job needs the JDK alone. See that action for why the
       # JetBrains distribution needs GITHUB_TOKEN.
       - name: Setup JDK
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@v6
         with:
           java-version: "21"
           distribution: "jetbrains"
