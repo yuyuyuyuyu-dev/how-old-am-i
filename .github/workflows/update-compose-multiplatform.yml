@@ -1,0 +1,133 @@
+name: Update Compose Multiplatform
+
+on:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: update-compose-multiplatform
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  prepare:
+    name: Prepare update
+    runs-on: ubuntu-latest
+    outputs:
+      compose: ${{ steps.select.outputs.compose }}
+      material3: ${{ steps.select.outputs.material3 }}
+      adaptive: ${{ steps.select.outputs.adaptive }}
+      adaptive-status: ${{ steps.select.outputs.adaptive-status }}
+      changed: ${{ steps.patch.outputs.changed }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Select versions
+        id: select
+        run: python3 .github/scripts/select_compose_versions.py
+
+      - name: Check for catalog changes
+        id: catalog
+        run: |
+          if git diff --quiet gradle/libs.versions.toml; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Setup build
+        if: steps.catalog.outputs.changed == 'true'
+        uses: ./.github/actions/setup-build
+
+      - name: Regenerate yarn.lock
+        if: steps.catalog.outputs.changed == 'true'
+        run: ./gradlew kotlinWasmUpgradeYarnLock
+
+      - name: Create patch
+        id: patch
+        run: |
+          git diff --binary > "$RUNNER_TEMP/update.patch"
+          if [ -s "$RUNNER_TEMP/update.patch" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Upload patch
+        if: steps.patch.outputs.changed == 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: update-patch
+          path: ${{ runner.temp }}/update.patch
+
+  open-pull-request:
+    name: Open pull request
+    needs: prepare
+    if: needs.prepare.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    env:
+      BRANCH: chore/update-compose-multiplatform
+      COMPOSE: ${{ needs.prepare.outputs.compose }}
+      MATERIAL3: ${{ needs.prepare.outputs.material3 }}
+      ADAPTIVE: ${{ needs.prepare.outputs.adaptive }}
+    steps:
+      - name: Create GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v3.2.0
+        with:
+          client-id: ${{ secrets.PR_BOT_CLIENT_ID }}
+          private-key: ${{ secrets.PR_BOT_PRIVATE_KEY }}
+
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Download patch
+        uses: actions/download-artifact@v8
+        with:
+          name: update-patch
+          path: ${{ runner.temp }}
+
+      - name: Push branch
+        run: |
+          git switch -C "$BRANCH"
+          git apply "$RUNNER_TEMP/update.patch"
+          git add --all
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit --message "build(deps): bump Compose Multiplatform to $COMPOSE"
+          git push --force origin "HEAD:refs/heads/$BRANCH"
+
+      - name: Open or update pull request
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          title="build(deps): bump Compose Multiplatform to $COMPOSE"
+          body="$(printf 'Compose Multiplatform: %s\nmaterial3: %s\nMaterial3 Adaptive: %s\n' \
+            "$COMPOSE" "$MATERIAL3" "${ADAPTIVE:-unchanged}")"
+          if [ "$(gh pr view "$BRANCH" --json state --jq .state 2>/dev/null)" = "OPEN" ]; then
+            gh pr edit "$BRANCH" --title "$title" --body "$body"
+          else
+            gh pr create --base main --head "$BRANCH" --title "$title" --body "$body"
+          fi
+          gh pr merge "$BRANCH" --auto --squash
+
+  report-adaptive:
+    name: Report Material3 Adaptive
+    needs: [prepare, open-pull-request]
+    if: always() && needs.prepare.outputs.adaptive-status == 'unparseable'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail
+        env:
+          COMPOSE: ${{ needs.prepare.outputs.compose }}
+        run: |
+          echo "::error::Could not read the Material3 Adaptive version for Compose Multiplatform $COMPOSE from the Compose Multiplatform changelog."
+          exit 1
