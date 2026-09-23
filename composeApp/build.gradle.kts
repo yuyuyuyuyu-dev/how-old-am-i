@@ -96,3 +96,56 @@ tasks.withType<KspAATask>().configureEach {
         dependsOn("kspCommonMainKotlinMetadata")
     }
 }
+
+val composeMultiplatformVersion: String = libs.versions.composeMultiplatform.get()
+
+configurations.configureEach {
+    if (isCanBeResolved) {
+        val pluginVersion = composeMultiplatformVersion
+        incoming.afterResolve {
+            val groupsBoundToPlugin =
+                setOf(
+                    "org.jetbrains.compose.runtime",
+                    "org.jetbrains.compose.ui",
+                    "org.jetbrains.compose.foundation",
+                    "org.jetbrains.compose.animation",
+                    "org.jetbrains.compose.material",
+                    "org.jetbrains.compose.components"
+                )
+            val release = { version: String ->
+                Regex("""^(\d+)\.(\d+)\.(\d+)""")
+                    .find(version)
+                    ?.destructured
+                    ?.let { (major, minor, patch) ->
+                        major.toLong() * 1_000_000 + minor.toLong() * 1_000 + patch.toLong()
+                    }
+                    ?: throw GradleException("Unrecognised Compose version $version")
+            }
+            val line = { version: String -> version.split(".").take(2).joinToString(".") }
+            val pluginRelease = release(pluginVersion)
+            val pluginLine = line(pluginVersion)
+            val problems =
+                resolutionResult.allComponents.mapNotNull {
+                    it.moduleVersion
+                }.mapNotNull { module ->
+                    val coordinates = "${module.group}:${module.name}"
+                    when {
+                        module.group in groupsBoundToPlugin &&
+                            release(module.version) > pluginRelease ->
+                            "$coordinates resolved to ${module.version}, " +
+                                "above Compose Multiplatform $pluginVersion"
+
+                        module.group == "org.jetbrains.compose.material3" &&
+                            line(module.version) != pluginLine ->
+                            "$coordinates resolved to ${module.version}, " +
+                                "outside the $pluginLine line of Compose Multiplatform $pluginVersion"
+
+                        else -> null
+                    }
+                }
+            if (problems.isNotEmpty()) {
+                throw GradleException(problems.distinct().joinToString("\n"))
+            }
+        }
+    }
+}
