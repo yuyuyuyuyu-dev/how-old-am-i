@@ -95,39 +95,47 @@ jobs:
           name: update-patch
           path: ${{ runner.temp }}
 
-      - name: Push branch
-        run: |
-          git switch -C "$BRANCH"
-          git apply "$RUNNER_TEMP/update.patch"
-          git add --all
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit --message "build(deps): bump Compose Multiplatform to $COMPOSE"
-          git push --force origin "HEAD:refs/heads/$BRANCH"
-
-      - name: Open or update pull request
+      - name: Push branch and open pull request
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
         run: |
           title="build(deps): bump Compose Multiplatform to $COMPOSE"
           body="$(printf 'Compose Multiplatform: %s\nmaterial3: %s\nMaterial3 Adaptive: %s\n' \
             "$COMPOSE" "$MATERIAL3" "${ADAPTIVE:-unchanged}")"
-          if [ "$(gh pr view "$BRANCH" --json state --jq .state 2>/dev/null)" = "OPEN" ]; then
-            gh pr edit "$BRANCH" --title "$title" --body "$body"
-          else
-            gh pr create --base main --head "$BRANCH" --title "$title" --body "$body"
+          pr="$(gh pr list --head "$BRANCH" --base main --state open --json url --jq '.[0].url // empty')"
+          git switch -C "$BRANCH"
+          git apply "$RUNNER_TEMP/update.patch"
+          git add --all
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit --message "$title"
+          if [ -n "$pr" ] && git fetch --quiet origin "$BRANCH" \
+            && [ "$(git rev-parse 'HEAD^{tree}')" = "$(git rev-parse 'FETCH_HEAD^{tree}')" ]; then
+            echo "The open pull request already holds this update." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
           fi
-          gh pr merge "$BRANCH" --auto --squash
+          git push --force origin "HEAD:refs/heads/$BRANCH"
+          if [ -n "$pr" ]; then
+            gh pr edit "$pr" --title "$title" --body "$body"
+          else
+            pr="$(gh pr create --base main --head "$BRANCH" --title "$title" --body "$body")"
+            gh pr merge "$pr" --auto --squash
+          fi
 
   report-adaptive:
     name: Report Material3 Adaptive
     needs: [prepare, open-pull-request]
-    if: always() && needs.prepare.outputs.adaptive-status == 'unparseable'
+    if: always() && contains(fromJSON('["unparseable", "overdue"]'), needs.prepare.outputs.adaptive-status)
     runs-on: ubuntu-latest
     steps:
       - name: Fail
         env:
           COMPOSE: ${{ needs.prepare.outputs.compose }}
+          STATUS: ${{ needs.prepare.outputs.adaptive-status }}
         run: |
-          echo "::error::Could not read the Material3 Adaptive version for Compose Multiplatform $COMPOSE from the Compose Multiplatform changelog."
+          if [ "$STATUS" = "overdue" ]; then
+            echo "::error::Material3 Adaptive for Compose Multiplatform $COMPOSE is still missing from the changelog or Maven Central more than three days after the release."
+          else
+            echo "::error::Could not read the Material3 Adaptive version for Compose Multiplatform $COMPOSE from the Compose Multiplatform changelog."
+          fi
           exit 1

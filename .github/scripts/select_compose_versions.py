@@ -1,8 +1,10 @@
+import email.utils
 import os
 import re
 import sys
 import urllib.request
 import xml.etree.ElementTree as ElementTree
+from datetime import datetime, timedelta, timezone
 
 MAVEN = "https://repo1.maven.org/maven2"
 CHANGELOG = "https://raw.githubusercontent.com/JetBrains/compose-multiplatform/master/CHANGELOG.md"
@@ -11,6 +13,7 @@ POM_NAMESPACE = {"pom": "http://maven.apache.org/POM/4.0.0"}
 STABLE = re.compile(r"^(\d+)\.(\d+)\.(\d+)$")
 KNOWN = re.compile(r"^(\d+)\.(\d+)\.(\d+)(?:-(alpha|beta|rc)(\d+))?$")
 STAGES = {"alpha": 0, "beta": 1, "rc": 2, None: 3}
+CHANGELOG_GRACE = timedelta(days=3)
 
 
 def fetch(url):
@@ -67,14 +70,28 @@ def paired_material3(compose):
     raise SystemExit(f"No material3 in the {'.'.join(line(compose))} line requires Compose {compose} or older")
 
 
+def published_at(compose):
+    path = f"org/jetbrains/compose/compose-gradle-plugin/{compose}/compose-gradle-plugin-{compose}.pom"
+    request = urllib.request.Request(f"{MAVEN}/{path}", method="HEAD")
+    with urllib.request.urlopen(request, timeout=60) as response:
+        return email.utils.parsedate_to_datetime(response.headers["Last-Modified"])
+
+
+def waiting(compose):
+    overdue = datetime.now(timezone.utc) - published_at(compose) > CHANGELOG_GRACE
+    return None, "overdue" if overdue else "pending"
+
+
 def paired_adaptive(compose):
     sections = re.split(r"^# ", fetch(CHANGELOG), flags=re.MULTILINE)
     section = next((s for s in sections if s.startswith(f"{compose} ")), None)
     if section is None:
-        return None, "pending"
+        return waiting(compose)
     match = re.search(r"org\.jetbrains\.compose\.material3\.adaptive:adaptive\*:([^`\s]+)", section)
     if not match or not KNOWN.match(match.group(1)):
         return None, "unparseable"
+    if match.group(1) not in versions("org/jetbrains/compose/material3/adaptive/adaptive-navigation3"):
+        return waiting(compose)
     return match.group(1), "found"
 
 
@@ -85,13 +102,20 @@ def set_version(catalog, key, version):
     return pattern.sub(f'{key} = "{version}"', catalog)
 
 
+def current_version(catalog, key):
+    match = re.search(rf'^{re.escape(key)} = "([^"]*)"$', catalog, re.MULTILINE)
+    if not match:
+        raise SystemExit(f"Expected a {key} version in {CATALOG}")
+    return match.group(1)
+
+
 def main():
-    compose = latest_stable_compose()
+    with open(CATALOG) as file:
+        catalog = file.read()
+    compose = max(latest_stable_compose(), current_version(catalog, "composeMultiplatform"), key=order)
     material3 = paired_material3(compose)
     adaptive, adaptive_status = paired_adaptive(compose)
 
-    with open(CATALOG) as file:
-        catalog = file.read()
     catalog = set_version(catalog, "composeMultiplatform", compose)
     catalog = set_version(catalog, "material3", material3)
     if adaptive:
