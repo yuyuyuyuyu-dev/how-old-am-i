@@ -98,6 +98,7 @@ jobs:
       - name: Push branch and open pull request
         env:
           GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          APP_SLUG: ${{ steps.app-token.outputs.app-slug }}
         run: |
           title="build(deps): bump Compose Multiplatform to $COMPOSE"
           body="$(printf 'Compose Multiplatform: %s\nmaterial3: %s\nMaterial3 Adaptive: %s\n' \
@@ -106,8 +107,8 @@ jobs:
           git switch -C "$BRANCH"
           git apply "$RUNNER_TEMP/update.patch"
           git add --all
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "${APP_SLUG}[bot]"
+          git config user.email "$(gh api "/users/${APP_SLUG}[bot]" --jq .id)+${APP_SLUG}[bot]@users.noreply.github.com"
           git commit --message "$title"
           if [ -n "$pr" ] && git fetch --quiet origin "$BRANCH" \
             && [ "$(git rev-parse 'HEAD^{tree}')" = "$(git rev-parse 'FETCH_HEAD^{tree}')" ]; then
