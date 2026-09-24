@@ -9,6 +9,9 @@ from datetime import datetime, timedelta, timezone
 MAVEN = "https://repo1.maven.org/maven2"
 CHANGELOG = "https://raw.githubusercontent.com/JetBrains/compose-multiplatform/master/CHANGELOG.md"
 CATALOG = "gradle/libs.versions.toml"
+DEPENDABOT = ".github/dependabot.yml"
+MANAGED_VERSIONS = {"composeMultiplatform", "material3", "compose-multiplatform-adaptive"}
+ENTRY = re.compile(r'^[\w-]+ = \{ (?:module|id) = "([^"]+)", version\.ref = "([^"]+)" \}$')
 POM_NAMESPACE = {"pom": "http://maven.apache.org/POM/4.0.0"}
 STABLE = re.compile(r"^(\d+)\.(\d+)\.(\d+)$")
 KNOWN = re.compile(r"^(\d+)\.(\d+)\.(\d+)(?:-(alpha|beta|rc)(\d+))?$")
@@ -109,9 +112,33 @@ def current_version(catalog, key):
     return match.group(1)
 
 
+def ownership_problems(catalog, dependabot):
+    problems = []
+    managed = set()
+    for text in catalog.splitlines():
+        entry = ENTRY.match(text)
+        if entry is None:
+            if '"org.jetbrains.compose' in text:
+                problems.append(f"Cannot read {text.strip()}")
+            continue
+        coordinates, version = entry.groups()
+        if version in MANAGED_VERSIONS:
+            managed.add(coordinates)
+        elif coordinates.startswith("org.jetbrains.compose"):
+            problems.append(f"{coordinates} does not use a version this workflow manages")
+    ignored = set(re.findall(r'dependency-name: "([^"]+)"', dependabot))
+    problems += [f"Dependabot does not ignore {c}" for c in sorted(managed - ignored)]
+    problems += [f"Dependabot ignores {c}, which this workflow does not manage" for c in sorted(ignored - managed)]
+    return problems
+
+
 def main():
     with open(CATALOG) as file:
         catalog = file.read()
+    with open(DEPENDABOT) as file:
+        problems = ownership_problems(catalog, file.read())
+    if problems:
+        raise SystemExit("\n".join(problems))
     compose = max(latest_stable_compose(), current_version(catalog, "composeMultiplatform"), key=order)
     material3 = paired_material3(compose)
     adaptive, adaptive_status = paired_adaptive(compose)

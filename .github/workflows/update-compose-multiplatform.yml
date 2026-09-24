@@ -122,6 +122,44 @@ jobs:
             gh pr merge "$pr" --auto --squash
           fi
 
+  close-pull-request:
+    name: Close unneeded pull request
+    needs: prepare
+    if: needs.prepare.outputs.changed == 'false'
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    env:
+      BRANCH: chore/update-compose-multiplatform
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - name: Find open pull request
+        id: find
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          url="$(gh pr list --head "$BRANCH" --base main --state open --json url --jq '.[0].url // empty')"
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub App token
+        id: app-token
+        if: steps.find.outputs.url != ''
+        uses: actions/create-github-app-token@v3.2.0
+        with:
+          client-id: ${{ secrets.PR_BOT_CLIENT_ID }}
+          private-key: ${{ secrets.PR_BOT_PRIVATE_KEY }}
+
+      - name: Close pull request
+        if: steps.find.outputs.url != ''
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          PR: ${{ steps.find.outputs.url }}
+          COMPOSE: ${{ needs.prepare.outputs.compose }}
+          MATERIAL3: ${{ needs.prepare.outputs.material3 }}
+        run: |
+          gh pr close "$PR" --delete-branch --comment \
+            "main already uses Compose Multiplatform $COMPOSE and material3 $MATERIAL3, so this update is no longer needed."
+
   report-adaptive:
     name: Report Material3 Adaptive
     needs: [prepare, open-pull-request]
