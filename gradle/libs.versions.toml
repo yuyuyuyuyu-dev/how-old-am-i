@@ -11,7 +11,7 @@ kotlin = "2.4.20"
 kotlinInject = "0.9.0"
 ksp = "2.3.12"
 myComposables = "0.1.1"
-spotless = "8.10.2"
+spotless = "8.10.3"
 versionCatalogUpdate = "1.1.1"
 
 [libraries]
