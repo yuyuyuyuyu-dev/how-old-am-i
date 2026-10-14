@@ -96,3 +96,67 @@ tasks.withType<KspAATask>().configureEach {
         dependsOn("kspCommonMainKotlinMetadata")
     }
 }
+
+val composeMultiplatformVersion: String = libs.versions.composeMultiplatform.get()
+val material3Version: String = libs.versions.material3.get()
+
+if (material3Version.split(".").take(2) != composeMultiplatformVersion.split(".").take(2)) {
+    throw GradleException(
+        "material3 $material3Version in the version catalog is outside the line of " +
+            "Compose Multiplatform $composeMultiplatformVersion"
+    )
+}
+
+configurations.configureEach {
+    if (isCanBeResolved) {
+        val pluginVersion = composeMultiplatformVersion
+        incoming.afterResolve {
+            val groupsBoundToPlugin =
+                setOf(
+                    "org.jetbrains.compose.runtime",
+                    "org.jetbrains.compose.ui",
+                    "org.jetbrains.compose.foundation",
+                    "org.jetbrains.compose.animation",
+                    "org.jetbrains.compose.material",
+                    "org.jetbrains.compose.components"
+                )
+            val rank = { version: String ->
+                Regex("""^(\d+)\.(\d+)\.(\d+)(?:-(alpha|beta|rc)(\d+))?$""")
+                    .matchEntire(version)
+                    ?.destructured
+                    ?.let { (major, minor, patch, stage, number) ->
+                        val release =
+                            (major.toLong() * 1_000 + minor.toLong()) * 1_000 + patch.toLong()
+                        val stageRank = listOf("alpha", "beta", "rc", "").indexOf(stage).toLong()
+                        (release * 10 + stageRank) * 1_000 + (number.toLongOrNull() ?: 0)
+                    }
+                    ?: throw GradleException("Unrecognised Compose version $version")
+            }
+            val line = { version: String -> version.split(".").take(2).joinToString(".") }
+            val pluginRank = rank(pluginVersion)
+            val pluginLine = line(pluginVersion)
+            val problems =
+                resolutionResult.allComponents.mapNotNull {
+                    it.moduleVersion
+                }.mapNotNull { module ->
+                    val coordinates = "${module.group}:${module.name}"
+                    when {
+                        module.group in groupsBoundToPlugin &&
+                            rank(module.version) > pluginRank ->
+                            "$coordinates resolved to ${module.version}, " +
+                                "above Compose Multiplatform $pluginVersion"
+
+                        module.group == "org.jetbrains.compose.material3" &&
+                            line(module.version) != pluginLine ->
+                            "$coordinates resolved to ${module.version}, " +
+                                "outside the $pluginLine line of Compose Multiplatform $pluginVersion"
+
+                        else -> null
+                    }
+                }
+            if (problems.isNotEmpty()) {
+                throw GradleException(problems.distinct().joinToString("\n"))
+            }
+        }
+    }
+}
