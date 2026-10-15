@@ -33,6 +33,9 @@ kotlin {
             }
         }
         binaries.executable()
+        compilerOptions {
+            freeCompilerArgs.add("-Xpartial-linkage-loglevel=ERROR")
+        }
     }
 
     sourceSets {
