@@ -98,14 +98,6 @@ tasks.withType<KspAATask>().configureEach {
 }
 
 val composeMultiplatformVersion: String = libs.versions.composeMultiplatform.get()
-val material3Version: String = libs.versions.material3.get()
-
-if (material3Version.split(".").take(2) != composeMultiplatformVersion.split(".").take(2)) {
-    throw GradleException(
-        "material3 $material3Version in the version catalog is outside the line of " +
-            "Compose Multiplatform $composeMultiplatformVersion"
-    )
-}
 
 configurations.configureEach {
     if (isCanBeResolved) {
@@ -132,28 +124,15 @@ configurations.configureEach {
                     }
                     ?: throw GradleException("Unrecognised Compose version $version")
             }
-            val line = { version: String -> version.split(".").take(2).joinToString(".") }
             val pluginRank = rank(pluginVersion)
-            val pluginLine = line(pluginVersion)
             val problems =
-                resolutionResult.allComponents.mapNotNull {
-                    it.moduleVersion
-                }.mapNotNull { module ->
-                    val coordinates = "${module.group}:${module.name}"
-                    when {
-                        module.group in groupsBoundToPlugin &&
-                            rank(module.version) > pluginRank ->
-                            "$coordinates resolved to ${module.version}, " +
-                                "above Compose Multiplatform $pluginVersion"
-
-                        module.group == "org.jetbrains.compose.material3" &&
-                            line(module.version) != pluginLine ->
-                            "$coordinates resolved to ${module.version}, " +
-                                "outside the $pluginLine line of Compose Multiplatform $pluginVersion"
-
-                        else -> null
+                resolutionResult.allComponents
+                    .mapNotNull { it.moduleVersion }
+                    .filter { it.group in groupsBoundToPlugin && rank(it.version) > pluginRank }
+                    .map {
+                        "${it.group}:${it.name} resolved to ${it.version}, " +
+                            "above Compose Multiplatform $pluginVersion"
                     }
-                }
             if (problems.isNotEmpty()) {
                 throw GradleException(problems.distinct().joinToString("\n"))
             }
