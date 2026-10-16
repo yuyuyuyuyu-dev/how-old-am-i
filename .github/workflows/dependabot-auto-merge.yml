@@ -28,7 +28,7 @@ jobs:
         id: app-token
         uses: actions/create-github-app-token@v3.2.0
         with:
-          client-id: ${{ secrets.PR_BOT_CLIENT_ID }}
+          client-id: ${{ vars.PR_BOT_CLIENT_ID }}
           private-key: ${{ secrets.PR_BOT_PRIVATE_KEY }}
 
       # `update-type` is the highest semver bump in the pull request, so a group is
