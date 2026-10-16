@@ -26,7 +26,7 @@ jobs:
       # `client-id` superseding `app-id`, and its lookup is an exact match on the ref.
       - name: Create GitHub App token
         id: app-token
-        uses: actions/create-github-app-token@v3.2.0
+        uses: actions/create-github-app-token@v3.3.0
         with:
           client-id: ${{ vars.PR_BOT_CLIENT_ID }}
           private-key: ${{ secrets.PR_BOT_PRIVATE_KEY }}
