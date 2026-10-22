@@ -1,8 +1,8 @@
 import com.google.devtools.ksp.gradle.KspAATask
-import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jlleitschuh.gradle.ktlint.tasks.BaseKtLintCheckTask
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -11,6 +11,19 @@ plugins {
     alias(libs.plugins.aboutLibraries)
     alias(libs.plugins.ksp)
     alias(libs.plugins.composePwa)
+    alias(libs.plugins.ktlint)
+    alias(libs.plugins.detekt)
+}
+
+ktlint {
+    version = libs.versions.ktlintCli
+    filter {
+        val buildPath =
+            layout.buildDirectory
+                .get()
+                .asFile.path
+        exclude { it.file.path.startsWith(buildPath) }
+    }
 }
 
 kotlin {
@@ -69,6 +82,22 @@ kotlin {
     }
 }
 
+aboutLibraries {
+    export {
+        outputFile = file("src/commonMain/composeResources/files/aboutlibraries.json")
+    }
+}
+
+compose.resources {
+    customDirectory(
+        sourceSetName = "commonMain",
+        directoryProvider =
+            tasks
+                .named("exportLibraryDefinitions")
+                .map { layout.projectDirectory.dir("src/commonMain/composeResources") },
+    )
+}
+
 compose.desktop {
     application {
         mainClass = "dev.yuyuyuyuyu.howoldami.MainKt"
@@ -81,10 +110,7 @@ compose.desktop {
     }
 }
 
-// Detekt is configured per-module here (not via the root `allprojects` block) because
-// pointing it at the Kotlin Multiplatform source sets requires this module's `src` tree.
-// Without this, the `detekt` task reports NO-SOURCE and analyzes nothing.
-configure<DetektExtension> {
+detekt {
     buildUponDefaultConfig = true
     config.setFrom(rootProject.files("config/detekt/detekt.yml"))
     source.setFrom("src")
@@ -98,6 +124,10 @@ tasks.withType<KspAATask>().configureEach {
     if (name != "kspCommonMainKotlinMetadata") {
         dependsOn("kspCommonMainKotlinMetadata")
     }
+}
+
+tasks.withType<BaseKtLintCheckTask>().configureEach {
+    mustRunAfter("kspCommonMainKotlinMetadata")
 }
 
 val composeMultiplatformVersion: String = libs.versions.composeMultiplatform.get()
