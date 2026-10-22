@@ -7,8 +7,8 @@ plugins {
     alias(libs.plugins.composeMultiplatform) apply false
     alias(libs.plugins.composeCompiler) apply false
     alias(libs.plugins.kotlinMultiplatform) apply false
-    alias(libs.plugins.spotless)
-    alias(libs.plugins.detekt)
+    alias(libs.plugins.ktlint)
+    alias(libs.plugins.detekt) apply false
     alias(libs.plugins.versionCatalogUpdate)
 }
 
@@ -33,52 +33,10 @@ val yarnSerialization =
 tasks.withType<KotlinNpmInstallTask>().configureEach { usesService(yarnSerialization) }
 tasks.withType<KotlinToolingSetupTask>().configureEach { usesService(yarnSerialization) }
 
-allprojects {
-    apply(plugin = "com.diffplug.spotless")
-    apply(plugin = "io.gitlab.arturbosch.detekt")
-
-    spotless {
-        kotlin {
-            target("**/*.kt")
-            targetExclude("**/build/**/*.kt")
-            ktlint()
-        }
-        kotlinGradle {
-            target("*.gradle.kts")
-            ktlint()
-        }
-    }
+ktlint {
+    version = libs.versions.ktlintCli
 }
 
-// Prettier handles the file types ktlint does not: Markdown, YAML, JSON, JS,
-// CSS and HTML. It is configured once on the root project (rather than per
-// subproject) so the whole repository is covered by a single Node/Prettier run,
-// and it is left on Prettier's defaults so there is no house style to maintain.
-spotless {
-    format("prettier") {
-        target(
-            "**/*.md",
-            "**/*.yml",
-            "**/*.yaml",
-            "**/*.json",
-            "**/*.js",
-            "**/*.css",
-            "**/*.html"
-        )
-        targetExclude("**/build/**", "**/node_modules/**")
-        prettier()
-    }
-}
-
-detekt {
-    config.setFrom(file("${project.rootDir}/config/detekt/detekt.yml"))
-    buildUponDefaultConfig = true
-}
-
-// Gradle has no built-in formatter for version catalogs and Spotless does not
-// cover them yet, so this plugin is what keeps libs.versions.toml diffs small
-// and review-focused instead of leaving entry order to manual bikeshedding.
 versionCatalogUpdate {
-    // Deterministic ordering so unrelated dependency edits don't collide.
     sortByKey = true
 }

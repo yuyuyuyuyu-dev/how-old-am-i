@@ -6,38 +6,26 @@ on:
   pull_request:
     branches: ["main"]
 
-jobs:
-  formatting:
-    name: Check Formatting
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-      - name: Setup build
-        uses: ./.github/actions/setup-build
-      - name: Run Spotless
-        run: ./gradlew spotlessCheck
-      - name: Check version catalog formatting
-        # The format task has no check-only mode, so we format and treat any
-        # resulting diff as proof the committed catalog was not formatted.
-        run: |
-          ./gradlew versionCatalogFormat
-          git diff --exit-code gradle/libs.versions.toml
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
-  linting:
-    name: Static Analysis
-    runs-on: ubuntu-latest
+permissions: {}
+
+jobs:
+  oxfmt:
+    name: Oxfmt
     permissions:
       contents: read
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-      - name: Setup build
-        uses: ./.github/actions/setup-build
-      - name: Run Detekt
-        run: ./gradlew detekt
+    uses: yuyuyuyuyu-dev/repo-config/.github/workflows/oxfmt.yml@main
+
+  kotlin-lint:
+    name: Kotlin lint
+    permissions:
+      contents: read
+    uses: yuyuyuyuyu-dev/repo-config/.github/workflows/kotlin-lint.yml@main
+    with:
+      compose-multiplatform: true
 
   actionlint:
     name: Lint Workflows
@@ -60,8 +48,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
-      - name: Setup build
-        uses: ./.github/actions/setup-build
+      - name: Set up the JDK and Gradle
+        uses: yuyuyuyuyu-dev/repo-config/.github/actions/setup-jdk-and-gradle@main
+        with:
+          compose-multiplatform: true
       - name: Run Tests
         run: ./gradlew allTests
 
@@ -73,7 +63,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
-      # Runs the exact same build as the deploy job (see .github/actions/build-distribution)
-      # so a broken production build is caught on the pull request, not after merging to main.
-      - name: Build distribution
-        uses: ./.github/actions/build-distribution
+      - name: Set up the JDK and Gradle
+        uses: yuyuyuyuyu-dev/repo-config/.github/actions/setup-jdk-and-gradle@main
+        with:
+          compose-multiplatform: true
+      - name: Build
+        run: ./gradlew :composeApp:wasmJsBrowserDistribution
