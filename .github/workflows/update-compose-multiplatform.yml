@@ -14,7 +14,7 @@ jobs:
     uses: yuyuyuyuyu-dev/update-compose-multiplatform/.github/workflows/update-compose-multiplatform.yml@main
     with:
       update-wasm-yarn-lock: true
-      jdk-distribution-to-update-yarn-lock: jetbrains
+      jdk-distribution-to-update-yarn-lock: zulu
       jdk-version-to-update-yarn-lock: "21"
       app-client-id: ${{ vars.PR_BOT_CLIENT_ID }}
       auto-merge: squash

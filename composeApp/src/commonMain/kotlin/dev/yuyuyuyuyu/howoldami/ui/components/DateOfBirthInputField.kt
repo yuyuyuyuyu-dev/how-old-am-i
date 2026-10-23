@@ -20,7 +20,7 @@ import dev.yuyuyuyuyu.howoldami.ui.model.DateOfBirth
 fun DateOfBirthInputField(
     value: DateOfBirth,
     onValueChange: (DateOfBirth) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val monthFocusRequester = remember { FocusRequester() }
     val dayFocusRequester = remember { FocusRequester() }
@@ -28,7 +28,7 @@ fun DateOfBirthInputField(
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         BaseNumberTextField(
             value = value.year,
@@ -39,7 +39,7 @@ fun DateOfBirthInputField(
                 }
             },
             modifier = Modifier.testTag("yearInput"),
-            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next)
+            keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
         )
         Text("/")
         DateSegmentField(
@@ -47,7 +47,7 @@ fun DateOfBirthInputField(
             validRange = 0..12,
             next = dayFocusRequester,
             modifier = Modifier.focusRequester(monthFocusRequester).testTag("monthInput"),
-            onValueChange = { onValueChange(value.copy(month = it)) }
+            onValueChange = { onValueChange(value.copy(month = it)) },
         )
         Text("/")
         DateSegmentField(
@@ -55,7 +55,7 @@ fun DateOfBirthInputField(
             validRange = 0..31,
             next = null,
             modifier = Modifier.focusRequester(dayFocusRequester).testTag("dayInput"),
-            onValueChange = { onValueChange(value.copy(day = it)) }
+            onValueChange = { onValueChange(value.copy(day = it)) },
         )
     }
 }
@@ -66,7 +66,7 @@ private fun DateSegmentField(
     validRange: IntRange,
     next: FocusRequester?,
     onValueChange: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val focusManager = LocalFocusManager.current
 
@@ -74,9 +74,11 @@ private fun DateSegmentField(
         value = value,
         onValueChange = {
             when {
-                it == "" -> onValueChange(it)
+                it == "" -> {
+                    onValueChange(it)
+                }
 
-                it.toInt() !in validRange -> Unit
+                it.toInt() !in validRange -> {}
 
                 else -> {
                     onValueChange(it)
@@ -87,8 +89,9 @@ private fun DateSegmentField(
             }
         },
         modifier = modifier,
-        keyboardOptions = KeyboardOptions.Default.copy(
-            imeAction = if (next != null) ImeAction.Next else ImeAction.Done
-        )
+        keyboardOptions =
+            KeyboardOptions.Default.copy(
+                imeAction = if (next != null) ImeAction.Next else ImeAction.Done,
+            ),
     )
 }
