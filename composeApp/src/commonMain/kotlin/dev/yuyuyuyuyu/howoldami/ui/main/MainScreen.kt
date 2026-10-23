@@ -38,15 +38,15 @@ fun MainScreen() {
             Modifier.clickable(
                 interactionSource = null,
                 indication = null,
-                onClick = { focusManager.clearFocus() }
+                onClick = { focusManager.clearFocus() },
             ),
         onSourceCodeButtonClick = {
             uriHandler.openUri("https://github.com/yuyuyuyuyu-dev/how-old-am-i")
-        }
+        },
     ) { innerPadding ->
         HowOldAmIScreen(
             viewModel = component.howOldAmIViewModel,
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.padding(innerPadding),
         )
     }
 }

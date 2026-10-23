@@ -36,7 +36,3 @@ tasks.withType<KotlinToolingSetupTask>().configureEach { usesService(yarnSeriali
 ktlint {
     version = libs.versions.ktlintCli
 }
-
-versionCatalogUpdate {
-    sortByKey = true
-}
