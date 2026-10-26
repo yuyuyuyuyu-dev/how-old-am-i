@@ -10,15 +10,16 @@ import kotlinx.coroutines.flow.update
 import me.tatarka.inject.annotations.Inject
 
 @Inject
-class HowOldAmIViewModelImpl(private val calculateAgeUseCase: CalculateAgeUseCase) :
-    ViewModel(),
+class HowOldAmIViewModelImpl(
+    private val calculateAgeUseCase: CalculateAgeUseCase,
+) : ViewModel(),
     HowOldAmIViewModel {
     private val _uiState =
         MutableStateFlow(
             HowOldAmIUiState(
                 dateOfBirth = DateOfBirth("", "", ""),
-                age = ""
-            )
+                age = "",
+            ),
         )
     override val uiState: StateFlow<HowOldAmIUiState> = _uiState.asStateFlow()
 

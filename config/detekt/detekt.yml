@@ -1,17 +1,3 @@
-# Only deviations from Detekt's defaults are listed here.
-# The build sets `buildUponDefaultConfig = true`, so every rule not mentioned
-# below keeps its default behavior. Add an entry only when there is a concrete
-# reason to differ from the default.
-
 naming:
   FunctionNaming:
-    # Jetpack Compose functions use PascalCase by design.
-    ignoreAnnotated: ["Composable", "Preview"]
-    # The default test excludes enumerate the test source sets but miss
-    # `wasmJsTest`; this pattern covers every test source set instead.
-    excludes: ["**/test/**", "**/*Test/**"]
-
-style:
-  MagicNumber:
-    # Same `wasmJsTest` gap as above; do not flag literals in test code.
-    excludes: ["**/test/**", "**/*Test/**"]
+    ignoreAnnotated: ["Composable"]

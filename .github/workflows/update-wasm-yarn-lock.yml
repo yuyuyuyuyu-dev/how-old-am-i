@@ -1,0 +1,19 @@
+name: Update the Wasm yarn.lock
+
+on:
+  schedule:
+    - cron: "41 21 * * *"
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  update-wasm-yarn-lock:
+    name: Update the Wasm yarn.lock
+    permissions:
+      contents: read
+    uses: yuyuyuyuyu-dev/repo-config/.github/workflows/update-wasm-yarn-lock.yml@main
+    with:
+      app-client-id: ${{ vars.PR_BOT_CLIENT_ID }}
+    secrets:
+      app-private-key: ${{ secrets.PR_BOT_PRIVATE_KEY }}
