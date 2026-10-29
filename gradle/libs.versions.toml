@@ -13,7 +13,7 @@ ktlint = "14.2.0"
 ktlintCli = "1.8.0"
 material3 = "1.13.0-alpha02"
 myComposables = "0.1.1"
-versionCatalogUpdate = "1.1.1"
+versionCatalogUpdate = "1.1.2"
 
 [libraries]
 aboutlibraries-compose-m3 = { module = "com.mikepenz:aboutlibraries-compose-m3", version.ref = "aboutLibraries" }
