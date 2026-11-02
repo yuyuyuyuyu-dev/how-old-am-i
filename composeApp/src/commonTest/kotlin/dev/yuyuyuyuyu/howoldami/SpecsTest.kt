@@ -18,8 +18,9 @@ import kotlin.time.ExperimentalTime
 @OptIn(ExperimentalTestApi::class, ExperimentalTime::class)
 class SpecsTest {
     @Test
-    fun `shows the age calculated from the entered date of birth and today`() =
+    fun `should show the age calculated from the entered date of birth and today`() =
         runComposeUiTest {
+            // Arrange
             val today =
                 object : Clock {
                     override fun now() = LocalDate(2023, 4, 6).atStartOfDayIn(TimeZone.UTC)
@@ -29,10 +30,12 @@ class SpecsTest {
                 HowOldAmIScreen(viewModel)
             }
 
+            // Act
             onNodeWithTag("yearInput").performTextInput("2016")
             onNodeWithTag("monthInput").performTextInput("10")
             onNodeWithTag("dayInput").performTextInput("15")
 
+            // Assert
             onNodeWithTag("ageText").assertContentDescriptionEquals("6")
         }
 }

@@ -19,17 +19,15 @@ class CalculateAgeUseCase(
         @IntRange(from = 1, to = 12) month: Int,
         @IntRange(from = 1, to = 31) day: Int,
     ): Int {
-        val today = clock.now().toLocalDateTime(timeZone)
+        val today = clock.now().toLocalDateTime(timeZone).date
+        val dateOfBirth = LocalDate(year = year, month = month, day = day)
 
-        var age = today.year - year
+        var age = today.year - dateOfBirth.year
 
-        val birthdayThisYear =
-            LocalDate(
-                year = today.year,
-                month = month,
-                day = day,
-            )
-        if (today.date < birthdayThisYear) {
+        val birthdayHasComeThisYear =
+            today.month > dateOfBirth.month ||
+                (today.month == dateOfBirth.month && today.day >= dateOfBirth.day)
+        if (!birthdayHasComeThisYear) {
             age -= 1
         }
 
