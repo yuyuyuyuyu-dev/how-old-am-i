@@ -1,0 +1,38 @@
+package dev.yuyuyuyuyu.howoldami
+
+import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.assertContentDescriptionEquals
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.test.v2.runComposeUiTest
+import dev.yuyuyuyuyu.howoldami.domain.useCases.CalculateAgeUseCase
+import dev.yuyuyuyuyu.howoldami.ui.howOldAmI.HowOldAmIScreen
+import dev.yuyuyuyuyu.howoldami.ui.howOldAmI.HowOldAmIViewModelImpl
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.atStartOfDayIn
+import kotlin.test.Test
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
+
+@OptIn(ExperimentalTestApi::class, ExperimentalTime::class)
+class SpecsTest {
+    @Test
+    fun `shows the age calculated from the entered date of birth and today`() =
+        runComposeUiTest {
+            val today =
+                object : Clock {
+                    override fun now() = LocalDate(2023, 4, 6).atStartOfDayIn(TimeZone.UTC)
+                }
+            val viewModel = HowOldAmIViewModelImpl(CalculateAgeUseCase(today, TimeZone.UTC))
+            setContent {
+                HowOldAmIScreen(viewModel)
+            }
+
+            onNodeWithTag("yearInput").performTextInput("2016")
+            onNodeWithTag("monthInput").performTextInput("11")
+            onNodeWithTag("dayInput").performTextInput("28")
+
+            onNodeWithTag("ageText").assertContentDescriptionEquals("6")
+        }
+}
