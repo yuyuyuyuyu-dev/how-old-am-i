@@ -27,7 +27,6 @@ kotlin {
     wasmJs {
         browser {
             testTask {
-                environment("TZ", "Asia/Tokyo")
                 useKarma {
                     useChromeHeadless()
                     webpackConfig.cssSupport {

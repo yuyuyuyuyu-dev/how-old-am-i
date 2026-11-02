@@ -500,23 +500,33 @@ class AppTest {
         }
 
     @Test
-    fun `should decide today by the time zone of the browser running in JST`() =
+    fun `should use the date of a browser ahead of UTC`() =
         runComposeUiTest {
-            // Arrange
-            val fixedClock =
-                object : Clock {
-                    override fun now() = LocalDate(2026, 6, 20).atTime(23, 0).toInstant(TimeZone.UTC)
-                }
-            val viewModel = HowOldAmIViewModelImpl(CalculateAgeUseCase(clock = fixedClock))
-            setContent {
-                HowOldAmIScreen(viewModel)
+            inBrowserAtNoonUtc(minutesBehindUtc = -840.0) {
+                // Arrange
+                setContent { App() }
+
+                // Act
+                enterDateOfBirth(year = "2000", month = "6", day = "21")
+
+                // Assert
+                assertAgeInApp("26")
             }
+        }
 
-            // Act
-            enterDateOfBirth(year = "2000", month = "6", day = "21")
+    @Test
+    fun `should use the date of a browser behind UTC`() =
+        runComposeUiTest {
+            inBrowserAtNoonUtc(minutesBehindUtc = 720.0) {
+                // Arrange
+                setContent { App() }
 
-            // Assert
-            onNodeWithTag("ageText").assertContentDescriptionEquals("26")
+                // Act
+                enterDateOfBirth(year = "2000", month = "6", day = "21")
+
+                // Assert
+                assertAgeInApp("25")
+            }
         }
 
     @Test
@@ -583,6 +593,19 @@ class AppTest {
             // Assert
             onNodeWithTag("ageText").assertContentDescriptionEquals("")
         }
+
+    private inline fun inBrowserAtNoonUtc(
+        minutesBehindUtc: Double,
+        block: () -> Unit,
+    ) {
+        val noonUtc = LocalDate(2026, 6, 20).atTime(12, 0).toInstant(TimeZone.UTC)
+        val restoreBrowserDate = replaceBrowserDate(noonUtc.toEpochMilliseconds().toDouble(), minutesBehindUtc)
+        try {
+            block()
+        } finally {
+            restoreBrowserDate()
+        }
+    }
 
     private fun ComposeUiTest.assertAgeInApp(age: String) {
         onNodeWithTag("ageText", useUnmergedTree = true).assertContentDescriptionEquals(age)
