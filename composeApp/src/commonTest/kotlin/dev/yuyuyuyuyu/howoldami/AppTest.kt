@@ -319,6 +319,16 @@ class AppTest {
         }
 
     @Test
+    fun `shows a negative age for a date of birth in the future`() =
+        runComposeUiTest {
+            showScreen(today = LocalDate(2026, 6, 21))
+
+            enterDateOfBirth(year = "2030", month = "1", day = "1")
+
+            onNodeWithTag("ageText").assertContentDescriptionEquals("-4")
+        }
+
+    @Test
     fun `accepts a month and a day with a leading zero`() =
         runComposeUiTest {
             showScreen(today = LocalDate(2026, 6, 21))

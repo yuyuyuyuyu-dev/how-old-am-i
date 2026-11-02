@@ -30,8 +30,8 @@ class SpecsTest {
             }
 
             onNodeWithTag("yearInput").performTextInput("2016")
-            onNodeWithTag("monthInput").performTextInput("11")
-            onNodeWithTag("dayInput").performTextInput("28")
+            onNodeWithTag("monthInput").performTextInput("10")
+            onNodeWithTag("dayInput").performTextInput("15")
 
             onNodeWithTag("ageText").assertContentDescriptionEquals("6")
         }
