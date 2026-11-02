@@ -9,8 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalUriHandler
 import com.mikepenz.aboutlibraries.ui.compose.produceLibraries
-import dev.yuyuyuyuyu.howoldami.di.AppComponent
-import dev.yuyuyuyuyu.howoldami.di.create
+import dev.yuyuyuyuyu.howoldami.di.createAppComponent
 import dev.yuyuyuyuyu.howoldami.ui.howOldAmI.HowOldAmIScreen
 import dev.yuyuyuyuyu.mycomposables.MyScaffold
 import howoldami.composeapp.generated.resources.Res
@@ -19,7 +18,7 @@ import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun MainScreen() {
-    val component = remember { AppComponent::class.create() }
+    val component = remember { createAppComponent() }
 
     val focusManager = LocalFocusManager.current
     val uriHandler = LocalUriHandler.current
