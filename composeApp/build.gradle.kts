@@ -1,8 +1,4 @@
-import com.google.devtools.ksp.gradle.KspAATask
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jlleitschuh.gradle.ktlint.tasks.BaseKtLintCheckTask
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -27,12 +23,6 @@ ktlint {
 }
 
 kotlin {
-    jvm {
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
-        }
-    }
-
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         browser {
@@ -52,9 +42,6 @@ kotlin {
     }
 
     sourceSets {
-        commonMain {
-            kotlin.srcDir("build/generated/ksp/metadata/commonMain/kotlin")
-        }
         commonMain.dependencies {
             implementation(libs.compose.runtime)
             implementation(libs.compose.foundation)
@@ -70,9 +57,6 @@ kotlin {
             implementation(libs.jetbrains.material3.adaptiveNavigation3)
             implementation(libs.jetbrains.lifecycle.viewmodelNavigation3)
             implementation(libs.yuyuyuyuyu.myComposables)
-        }
-        jvmMain.dependencies {
-            implementation(compose.desktop.currentOs)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -98,18 +82,6 @@ compose.resources {
     )
 }
 
-compose.desktop {
-    application {
-        mainClass = "dev.yuyuyuyuyu.howoldami.MainKt"
-
-        nativeDistributions {
-            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "dev.yuyuyuyuyu.howoldami"
-            packageVersion = "1.0.0"
-        }
-    }
-}
-
 detekt {
     buildUponDefaultConfig = true
     config.setFrom(rootProject.files("config/detekt/detekt.yml"))
@@ -117,17 +89,7 @@ detekt {
 }
 
 dependencies {
-    kspCommonMainMetadata(libs.kotlinInject.compiler)
-}
-
-tasks.withType<KspAATask>().configureEach {
-    if (name != "kspCommonMainKotlinMetadata") {
-        dependsOn("kspCommonMainKotlinMetadata")
-    }
-}
-
-tasks.withType<BaseKtLintCheckTask>().configureEach {
-    mustRunAfter("kspCommonMainKotlinMetadata")
+    add("kspWasmJs", libs.kotlinInject.compiler)
 }
 
 val composeMultiplatformVersion: String = libs.versions.composeMultiplatform.get()

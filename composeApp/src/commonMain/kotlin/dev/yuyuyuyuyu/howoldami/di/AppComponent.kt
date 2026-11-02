@@ -12,3 +12,5 @@ abstract class AppComponent {
     @Provides
     fun provideHowOldAmIViewModel(impl: HowOldAmIViewModelImpl): HowOldAmIViewModel = impl
 }
+
+expect fun createAppComponent(): AppComponent
