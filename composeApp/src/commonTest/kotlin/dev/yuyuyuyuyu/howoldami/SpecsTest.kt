@@ -9,7 +9,8 @@ import dev.yuyuyuyuyu.howoldami.domain.useCases.CalculateAgeUseCase
 import dev.yuyuyuyuyu.howoldami.ui.howOldAmI.HowOldAmIScreen
 import dev.yuyuyuyuyu.howoldami.ui.howOldAmI.HowOldAmIViewModelImpl
 import kotlinx.datetime.LocalDate
-import kotlinx.datetime.TimeZone
+import kotlinx.datetime.UtcOffset
+import kotlinx.datetime.asTimeZone
 import kotlinx.datetime.atStartOfDayIn
 import kotlin.test.Test
 import kotlin.time.Clock
@@ -21,11 +22,12 @@ class SpecsTest {
     fun `should show the age calculated from the entered date of birth and today`() =
         runComposeUiTest {
             // Arrange
+            val jst = UtcOffset(hours = 9).asTimeZone()
             val today =
                 object : Clock {
-                    override fun now() = LocalDate(2023, 4, 6).atStartOfDayIn(TimeZone.UTC)
+                    override fun now() = LocalDate(2023, 4, 6).atStartOfDayIn(jst)
                 }
-            val viewModel = HowOldAmIViewModelImpl(CalculateAgeUseCase(today, TimeZone.UTC))
+            val viewModel = HowOldAmIViewModelImpl(CalculateAgeUseCase(today, jst))
             setContent {
                 HowOldAmIScreen(viewModel)
             }
