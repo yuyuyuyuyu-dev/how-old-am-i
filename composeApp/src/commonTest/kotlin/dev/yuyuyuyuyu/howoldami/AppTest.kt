@@ -500,6 +500,26 @@ class AppTest {
         }
 
     @Test
+    fun `should decide today by the time zone of the browser running in JST`() =
+        runComposeUiTest {
+            // Arrange
+            val fixedClock =
+                object : Clock {
+                    override fun now() = LocalDate(2026, 6, 20).atTime(23, 0).toInstant(TimeZone.UTC)
+                }
+            val viewModel = HowOldAmIViewModelImpl(CalculateAgeUseCase(clock = fixedClock))
+            setContent {
+                HowOldAmIScreen(viewModel)
+            }
+
+            // Act
+            enterDateOfBirth(year = "2000", month = "6", day = "21")
+
+            // Assert
+            onNodeWithTag("ageText").assertContentDescriptionEquals("26")
+        }
+
+    @Test
     fun `should not subtract one for someone born on a leap day when today is a leap day`() =
         runComposeUiTest {
             // Arrange
