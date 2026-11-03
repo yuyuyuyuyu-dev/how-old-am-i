@@ -11,8 +11,8 @@ import kotlin.time.ExperimentalTime
 @OptIn(ExperimentalTime::class)
 @Inject
 class CalculateAgeUseCase(
-    private val clock: Clock = Clock.System,
-    private val timeZone: TimeZone = TimeZone.currentSystemDefault(),
+    private val clock: Clock,
+    private val timeZone: TimeZone,
 ) {
     operator fun invoke(
         year: Int,
