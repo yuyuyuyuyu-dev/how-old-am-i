@@ -25,7 +25,10 @@ fun MainScreen(
     clock: Clock,
     timeZone: TimeZone,
 ) {
-    val component = remember(clock, timeZone) { createAppComponent(clock, timeZone) }
+    val viewModel =
+        remember(clock, timeZone) {
+            createAppComponent(clock, timeZone).howOldAmIViewModel
+        }
 
     val focusManager = LocalFocusManager.current
     val uriHandler = LocalUriHandler.current
@@ -51,7 +54,7 @@ fun MainScreen(
         },
     ) { innerPadding ->
         HowOldAmIScreen(
-            viewModel = component.howOldAmIViewModel,
+            viewModel = viewModel,
             modifier = Modifier.padding(innerPadding),
         )
     }
