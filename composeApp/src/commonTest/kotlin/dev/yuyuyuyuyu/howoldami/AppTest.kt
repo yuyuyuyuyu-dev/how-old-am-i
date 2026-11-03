@@ -6,7 +6,7 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.UriHandler
 import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.ExperimentalTestApi
-import androidx.compose.ui.test.assertContentDescriptionEquals
+import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsFocused
@@ -14,16 +14,18 @@ import androidx.compose.ui.test.assertIsNotFocused
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.click
 import androidx.compose.ui.test.isFocused
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.v2.runComposeUiTest
-import dev.yuyuyuyuyu.howoldami.domain.useCases.CalculateAgeUseCase
-import dev.yuyuyuyuyu.howoldami.ui.howOldAmI.HowOldAmIScreen
-import dev.yuyuyuyuyu.howoldami.ui.howOldAmI.HowOldAmIViewModelImpl
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.UtcOffset
@@ -35,22 +37,46 @@ import kotlinx.datetime.toLocalDateTime
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.time.Clock
+import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
+import kotlin.time.TimeSource
 
 @OptIn(ExperimentalTestApi::class, ExperimentalTime::class)
 class AppTest {
     @Test
-    fun `should show the inputs and no age when the app starts`() =
+    fun `should show the title, the prompt, the inputs, and no age when the app starts`() =
         runComposeUiTest {
             // Act
             setContent { App() }
 
             // Assert
+            awaitNodeWithText("How old am I").assertIsDisplayed()
+            awaitNodeWithText("Please input your date of birth.").assertIsDisplayed()
             onNodeWithTag("yearInput").assertIsDisplayed()
             onNodeWithTag("monthInput").assertIsDisplayed()
             onNodeWithTag("dayInput").assertIsDisplayed()
-            assertAgeInApp("")
+            assertNoAge()
+        }
+
+    @Test
+    fun `should keep the date of birth after coming back from the open source licenses`() =
+        runComposeUiTest {
+            // Arrange
+            showApp(today = LocalDate(2026, 6, 21))
+            enterDateOfBirth(year = "2000", month = "6", day = "21")
+
+            // Act
+            onNodeWithTag("SimpleTopAppBar.MenuButton").performClick()
+            onNodeWithTag("SimpleTopAppBar.OpenSourceLicensesButton").performClick()
+            onNodeWithTag("SimpleTopAppBar.NavigateBackButton").performClick()
+
+            // Assert
+            onNodeWithTag("yearInput").assertTextEquals("2000")
+            onNodeWithTag("monthInput").assertTextEquals("6")
+            onNodeWithTag("dayInput").assertTextEquals("21")
+            assertAge(26)
         }
 
     @Test
@@ -68,7 +94,7 @@ class AppTest {
             enterDateOfBirth(year = "${thisYear - 30}", month = "1", day = "1")
 
             // Assert
-            assertAgeInApp("30")
+            assertAge(30)
         }
 
     @Test
@@ -81,7 +107,7 @@ class AppTest {
             onNodeWithTag("yearInput").performTextInput("1990")
 
             // Assert
-            assertAgeInApp("")
+            assertNoAge()
         }
 
     @Test
@@ -94,7 +120,7 @@ class AppTest {
             enterDateOfBirth(year = "1990", month = "2", day = "30")
 
             // Assert
-            assertAgeInApp("")
+            assertNoAge()
         }
 
     @Test
@@ -107,7 +133,7 @@ class AppTest {
             enterDateOfBirth(year = "1000000000", month = "1", day = "1")
 
             // Assert
-            assertAgeInApp("")
+            assertNoAge()
         }
 
     @Test
@@ -120,7 +146,7 @@ class AppTest {
             enterDateOfBirth(year = "1990", month = "0", day = "1")
 
             // Assert
-            assertAgeInApp("")
+            assertNoAge()
         }
 
     @Test
@@ -133,7 +159,7 @@ class AppTest {
             enterDateOfBirth(year = "1990", month = "1", day = "0")
 
             // Assert
-            assertAgeInApp("")
+            assertNoAge()
         }
 
     @Test
@@ -215,7 +241,7 @@ class AppTest {
 
             // Assert
             onNodeWithTag("yearInput").assertTextEquals("")
-            assertAgeInApp("")
+            assertNoAge()
         }
 
     @Test
@@ -230,7 +256,7 @@ class AppTest {
 
             // Assert
             onNodeWithTag("monthInput").assertTextEquals("")
-            assertAgeInApp("")
+            assertNoAge()
         }
 
     @Test
@@ -245,7 +271,7 @@ class AppTest {
 
             // Assert
             onNodeWithTag("dayInput").assertTextEquals("")
-            assertAgeInApp("")
+            assertNoAge()
         }
 
     @Test
@@ -330,164 +356,164 @@ class AppTest {
     fun `should not subtract one when the birthday already passed this year`() =
         runComposeUiTest {
             // Arrange
-            showScreen(today = LocalDate(2026, 6, 21))
+            showApp(today = LocalDate(2026, 6, 21))
 
             // Act
             enterDateOfBirth(year = "1990", month = "1", day = "1")
 
             // Assert
-            onNodeWithTag("ageText").assertContentDescriptionEquals("36")
+            assertAge(36)
         }
 
     @Test
     fun `should not subtract one on the birthday itself`() =
         runComposeUiTest {
             // Arrange
-            showScreen(today = LocalDate(2026, 6, 21))
+            showApp(today = LocalDate(2026, 6, 21))
 
             // Act
             enterDateOfBirth(year = "2000", month = "6", day = "21")
 
             // Assert
-            onNodeWithTag("ageText").assertContentDescriptionEquals("26")
+            assertAge(26)
         }
 
     @Test
     fun `should subtract one when the birthday has not come yet this year`() =
         runComposeUiTest {
             // Arrange
-            showScreen(today = LocalDate(2026, 6, 21))
+            showApp(today = LocalDate(2026, 6, 21))
 
             // Act
             enterDateOfBirth(year = "2000", month = "12", day = "31")
 
             // Assert
-            onNodeWithTag("ageText").assertContentDescriptionEquals("25")
+            assertAge(25)
         }
 
     @Test
     fun `should subtract one on the day before the birthday`() =
         runComposeUiTest {
             // Arrange
-            showScreen(today = LocalDate(2026, 6, 21))
+            showApp(today = LocalDate(2026, 6, 21))
 
             // Act
             enterDateOfBirth(year = "2000", month = "6", day = "22")
 
             // Assert
-            onNodeWithTag("ageText").assertContentDescriptionEquals("25")
+            assertAge(25)
         }
 
     @Test
     fun `should not subtract one on the day after the birthday`() =
         runComposeUiTest {
             // Arrange
-            showScreen(today = LocalDate(2026, 6, 21))
+            showApp(today = LocalDate(2026, 6, 21))
 
             // Act
             enterDateOfBirth(year = "2000", month = "6", day = "20")
 
             // Assert
-            onNodeWithTag("ageText").assertContentDescriptionEquals("26")
+            assertAge(26)
         }
 
     @Test
     fun `should not subtract one for an earlier month with a later day`() =
         runComposeUiTest {
             // Arrange
-            showScreen(today = LocalDate(2026, 6, 21))
+            showApp(today = LocalDate(2026, 6, 21))
 
             // Act
             enterDateOfBirth(year = "2000", month = "5", day = "31")
 
             // Assert
-            onNodeWithTag("ageText").assertContentDescriptionEquals("26")
+            assertAge(26)
         }
 
     @Test
     fun `should subtract one for a later month with an earlier day`() =
         runComposeUiTest {
             // Arrange
-            showScreen(today = LocalDate(2026, 6, 21))
+            showApp(today = LocalDate(2026, 6, 21))
 
             // Act
             enterDateOfBirth(year = "2000", month = "7", day = "1")
 
             // Assert
-            onNodeWithTag("ageText").assertContentDescriptionEquals("25")
+            assertAge(25)
         }
 
     @Test
     fun `should show zero on the day of birth`() =
         runComposeUiTest {
             // Arrange
-            showScreen(today = LocalDate(2026, 6, 21))
+            showApp(today = LocalDate(2026, 6, 21))
 
             // Act
             enterDateOfBirth(year = "2026", month = "6", day = "21")
 
             // Assert
-            onNodeWithTag("ageText").assertContentDescriptionEquals("0")
+            assertAge(0)
         }
 
     @Test
     fun `should show a negative age for a future date of birth whose birthday already passed this year`() =
         runComposeUiTest {
             // Arrange
-            showScreen(today = LocalDate(2026, 6, 21))
+            showApp(today = LocalDate(2026, 6, 21))
 
             // Act
             enterDateOfBirth(year = "2030", month = "1", day = "1")
 
             // Assert
-            onNodeWithTag("ageText").assertContentDescriptionEquals("-4")
+            assertAge(-4)
         }
 
     @Test
     fun `should subtract one from a negative age when the birthday has not come yet this year`() =
         runComposeUiTest {
             // Arrange
-            showScreen(today = LocalDate(2026, 6, 21))
+            showApp(today = LocalDate(2026, 6, 21))
 
             // Act
             enterDateOfBirth(year = "2030", month = "12", day = "31")
 
             // Assert
-            onNodeWithTag("ageText").assertContentDescriptionEquals("-5")
+            assertAge(-5)
         }
 
     @Test
     fun `should accept a month and a day with a leading zero`() =
         runComposeUiTest {
             // Arrange
-            showScreen(today = LocalDate(2026, 6, 21))
+            showApp(today = LocalDate(2026, 6, 21))
 
             // Act
             enterDateOfBirth(year = "1990", month = "01", day = "01")
 
             // Assert
-            onNodeWithTag("ageText").assertContentDescriptionEquals("36")
+            assertAge(36)
         }
 
     @Test
     fun `should recalculate the age when the date of birth is edited`() =
         runComposeUiTest {
             // Arrange
-            showScreen(today = LocalDate(2026, 6, 21))
+            showApp(today = LocalDate(2026, 6, 21))
             enterDateOfBirth(year = "2000", month = "1", day = "1")
 
             // Act
             onNodeWithTag("monthInput").performTextInput("2")
 
             // Assert
-            onNodeWithTag("ageText").assertContentDescriptionEquals("25")
+            assertAge(25)
         }
 
     @Test
     fun `should decide today by the date in the time zone of the user`() =
         runComposeUiTest {
             // Arrange
-            showScreen(
+            showApp(
                 now = LocalDate(2026, 6, 20).atTime(15, 0).toInstant(TimeZone.UTC),
                 timeZone = UtcOffset(hours = 9).asTimeZone(),
             )
@@ -496,7 +522,7 @@ class AppTest {
             enterDateOfBirth(year = "2000", month = "6", day = "21")
 
             // Assert
-            onNodeWithTag("ageText").assertContentDescriptionEquals("26")
+            assertAge(26)
         }
 
     @Test
@@ -510,7 +536,7 @@ class AppTest {
                 enterDateOfBirth(year = "2000", month = "6", day = "21")
 
                 // Assert
-                assertAgeInApp("26")
+                assertAge(26)
             }
         }
 
@@ -525,7 +551,7 @@ class AppTest {
                 enterDateOfBirth(year = "2000", month = "6", day = "21")
 
                 // Assert
-                assertAgeInApp("25")
+                assertAge(25)
             }
         }
 
@@ -533,65 +559,65 @@ class AppTest {
     fun `should not subtract one for someone born on a leap day when today is a leap day`() =
         runComposeUiTest {
             // Arrange
-            showScreen(today = LocalDate(2024, 2, 29))
+            showApp(today = LocalDate(2024, 2, 29))
 
             // Act
             enterDateOfBirth(year = "2000", month = "2", day = "29")
 
             // Assert
-            onNodeWithTag("ageText").assertContentDescriptionEquals("24")
+            assertAge(24)
         }
 
     @Test
     fun `should subtract one for someone born on a leap day on February 28 of a common year`() =
         runComposeUiTest {
             // Arrange
-            showScreen(today = LocalDate(2026, 2, 28))
+            showApp(today = LocalDate(2026, 2, 28))
 
             // Act
             enterDateOfBirth(year = "2000", month = "2", day = "29")
 
             // Assert
-            onNodeWithTag("ageText").assertContentDescriptionEquals("25")
+            assertAge(25)
         }
 
     @Test
     fun `should not subtract one for someone born on a leap day on March 1 of a common year`() =
         runComposeUiTest {
             // Arrange
-            showScreen(today = LocalDate(2026, 3, 1))
+            showApp(today = LocalDate(2026, 3, 1))
 
             // Act
             enterDateOfBirth(year = "2000", month = "2", day = "29")
 
             // Assert
-            onNodeWithTag("ageText").assertContentDescriptionEquals("26")
+            assertAge(26)
         }
 
     @Test
     fun `should show a negative age for a future leap day in a common year`() =
         runComposeUiTest {
             // Arrange
-            showScreen(today = LocalDate(2026, 6, 21))
+            showApp(today = LocalDate(2026, 6, 21))
 
             // Act
             enterDateOfBirth(year = "2028", month = "2", day = "29")
 
             // Assert
-            onNodeWithTag("ageText").assertContentDescriptionEquals("-2")
+            assertAge(-2)
         }
 
     @Test
     fun `should show no age for February 29 of a common year when today is in a leap year`() =
         runComposeUiTest {
             // Arrange
-            showScreen(today = LocalDate(2024, 6, 21))
+            showApp(today = LocalDate(2024, 6, 21))
 
             // Act
             enterDateOfBirth(year = "2023", month = "2", day = "29")
 
             // Assert
-            onNodeWithTag("ageText").assertContentDescriptionEquals("")
+            assertNoAge()
         }
 
     private inline fun inBrowserAtNoonUtc(
@@ -607,15 +633,29 @@ class AppTest {
         }
     }
 
-    private fun ComposeUiTest.assertAgeInApp(age: String) {
-        onNodeWithTag("ageText", useUnmergedTree = true).assertContentDescriptionEquals(age)
+    private suspend fun ComposeUiTest.awaitNodeWithText(text: String): SemanticsNodeInteraction {
+        val deadline = TimeSource.Monotonic.markNow() + 1.seconds
+        while (onAllNodesWithText(text, useUnmergedTree = true).fetchSemanticsNodes().isEmpty() &&
+            deadline.hasNotPassedNow()
+        ) {
+            withContext(Dispatchers.Default) { delay(10.milliseconds) }
+        }
+        return onNodeWithText(text, useUnmergedTree = true)
     }
 
-    private fun ComposeUiTest.showScreen(today: LocalDate) {
-        showScreen(now = today.atStartOfDayIn(TimeZone.UTC), timeZone = TimeZone.UTC)
+    private suspend fun ComposeUiTest.assertAge(age: Int) {
+        awaitNodeWithText("You are $age years old.").assertIsDisplayed()
     }
 
-    private fun ComposeUiTest.showScreen(
+    private suspend fun ComposeUiTest.assertNoAge() {
+        awaitNodeWithText("You are  years old.").assertIsDisplayed()
+    }
+
+    private fun ComposeUiTest.showApp(today: LocalDate) {
+        showApp(now = today.atStartOfDayIn(TimeZone.UTC), timeZone = TimeZone.UTC)
+    }
+
+    private fun ComposeUiTest.showApp(
         now: Instant,
         timeZone: TimeZone,
     ) {
@@ -623,10 +663,9 @@ class AppTest {
             object : Clock {
                 override fun now() = now
             }
-        val viewModel = HowOldAmIViewModelImpl(CalculateAgeUseCase(fixedClock, timeZone))
 
         setContent {
-            HowOldAmIScreen(viewModel)
+            App(clock = fixedClock, timeZone = timeZone)
         }
     }
 
