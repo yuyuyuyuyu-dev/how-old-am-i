@@ -14,11 +14,21 @@ import dev.yuyuyuyuyu.howoldami.ui.howOldAmI.HowOldAmIScreen
 import dev.yuyuyuyuyu.mycomposables.MyScaffold
 import howoldami.composeapp.generated.resources.Res
 import howoldami.composeapp.generated.resources.app_name
+import kotlinx.datetime.TimeZone
 import org.jetbrains.compose.resources.stringResource
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 @Composable
-fun MainScreen() {
-    val component = remember { createAppComponent() }
+fun MainScreen(
+    clock: Clock,
+    timeZone: TimeZone,
+) {
+    val viewModel =
+        remember(clock, timeZone) {
+            createAppComponent(clock, timeZone).howOldAmIViewModel
+        }
 
     val focusManager = LocalFocusManager.current
     val uriHandler = LocalUriHandler.current
@@ -44,7 +54,7 @@ fun MainScreen() {
         },
     ) { innerPadding ->
         HowOldAmIScreen(
-            viewModel = component.howOldAmIViewModel,
+            viewModel = viewModel,
             modifier = Modifier.padding(innerPadding),
         )
     }

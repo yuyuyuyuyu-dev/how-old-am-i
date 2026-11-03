@@ -21,7 +21,7 @@ fun BaseNumberTextField(
 ) = TextField(
     value = value,
     onValueChange = {
-        if (it.toIntOrNull() == null) {
+        if (it.isNotEmpty() && it.toIntOrNull() == null) {
             return@TextField
         }
 
