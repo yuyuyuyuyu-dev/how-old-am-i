@@ -58,6 +58,9 @@ kotlin {
             implementation(libs.jetbrains.lifecycle.viewmodelNavigation3)
             implementation(libs.yuyuyuyuyu.myComposables)
         }
+        webMain.dependencies {
+            implementation(libs.kotlinx.browser)
+        }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
             @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)

@@ -1,3 +1,15 @@
 naming:
   FunctionNaming:
+    excludes:
+      [
+        "**/test/**",
+        "**/androidTest/**",
+        "**/commonTest/**",
+        "**/jvmTest/**",
+        "**/androidUnitTest/**",
+        "**/androidInstrumentedTest/**",
+        "**/jsTest/**",
+        "**/iosTest/**",
+        "**/wasmJsTest/**",
+      ]
     ignoreAnnotated: ["Composable"]
