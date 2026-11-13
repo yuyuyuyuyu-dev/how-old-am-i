@@ -25,7 +25,7 @@ import kotlin.time.ExperimentalTime
 import kotlin.time.TimeSource
 
 @OptIn(ExperimentalTestApi::class, ExperimentalTime::class)
-class SpecsTest {
+class ShowAgeTest {
     @Test
     fun `should show the age calculated from the entered date of birth and today`() =
         runComposeUiTest {

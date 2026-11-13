@@ -32,7 +32,7 @@ private external fun setBrowserLanguage(language: String)
 @JsFun("() => { delete navigator.language; delete navigator.languages; }")
 private external fun restoreBrowserLanguage()
 
-class WebAppTest {
+class PageLanguageTest {
     @Test
     fun `should mark the page as English for a browser in English`() =
         runComposeUiTest {
