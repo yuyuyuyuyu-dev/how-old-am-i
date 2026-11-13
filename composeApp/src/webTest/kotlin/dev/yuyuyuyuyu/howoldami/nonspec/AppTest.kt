@@ -1,4 +1,4 @@
-package dev.yuyuyuyuyu.howoldami
+package dev.yuyuyuyuyu.howoldami.nonspec
 
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.geometry.Offset
@@ -23,6 +23,7 @@ import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.v2.runComposeUiTest
+import dev.yuyuyuyuyu.howoldami.App
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext

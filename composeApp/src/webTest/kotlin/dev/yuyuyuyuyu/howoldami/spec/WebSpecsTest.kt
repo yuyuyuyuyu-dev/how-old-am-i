@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalWasmJsInterop::class)
 
-package dev.yuyuyuyuyu.howoldami
+package dev.yuyuyuyuyu.howoldami.spec
 
 import kotlinx.coroutines.await
 import kotlinx.coroutines.test.runTest

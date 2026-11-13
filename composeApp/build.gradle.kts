@@ -61,12 +61,10 @@ kotlin {
         webMain.dependencies {
             implementation(libs.kotlinx.browser)
         }
-        commonTest.dependencies {
+        webTest.dependencies {
             implementation(libs.kotlin.test)
             @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
             implementation(compose.uiTest)
-        }
-        wasmJsTest.dependencies {
             implementation(libs.kotlinx.coroutines.test)
         }
     }

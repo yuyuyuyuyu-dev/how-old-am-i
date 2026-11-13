@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalWasmJsInterop::class)
 
-package dev.yuyuyuyuyu.howoldami
+package dev.yuyuyuyuyu.howoldami.nonspec
 
 @JsFun("() => globalThis.Date")
 private external fun browserDate(): JsAny
@@ -30,7 +30,7 @@ private external fun fixedBrowserDate(
     minutesBehindUtc: Double,
 ): JsAny
 
-internal actual fun replaceBrowserDate(
+internal fun replaceBrowserDate(
     epochMillis: Double,
     minutesBehindUtc: Double,
 ): () -> Unit {

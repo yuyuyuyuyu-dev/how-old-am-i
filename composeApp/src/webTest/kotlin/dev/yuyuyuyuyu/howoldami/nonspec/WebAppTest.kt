@@ -1,10 +1,11 @@
 @file:OptIn(ExperimentalWasmJsInterop::class, ExperimentalTestApi::class)
 
-package dev.yuyuyuyuyu.howoldami
+package dev.yuyuyuyuyu.howoldami.nonspec
 
 import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.v2.runComposeUiTest
+import dev.yuyuyuyuyu.howoldami.WebApp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
