@@ -1,4 +1,4 @@
-package dev.yuyuyuyuyu.howoldami
+package dev.yuyuyuyuyu.howoldami.spec
 
 import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.ExperimentalTestApi
@@ -9,6 +9,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.v2.runComposeUiTest
+import dev.yuyuyuyuyu.howoldami.App
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -24,7 +25,7 @@ import kotlin.time.ExperimentalTime
 import kotlin.time.TimeSource
 
 @OptIn(ExperimentalTestApi::class, ExperimentalTime::class)
-class SpecsTest {
+class ShowAgeTest {
     @Test
     fun `should show the age calculated from the entered date of birth and today`() =
         runComposeUiTest {

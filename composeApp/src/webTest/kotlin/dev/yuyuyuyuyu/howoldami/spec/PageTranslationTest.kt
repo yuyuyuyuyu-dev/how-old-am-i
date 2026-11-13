@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalWasmJsInterop::class)
 
-package dev.yuyuyuyuyu.howoldami
+package dev.yuyuyuyuyu.howoldami.spec
 
 import kotlinx.coroutines.await
 import kotlinx.coroutines.test.runTest
@@ -16,7 +16,7 @@ import kotlin.test.assertEquals
 )
 private external fun loadIndexHtml(): Promise<Document>
 
-class WebSpecsTest {
+class PageTranslationTest {
     @Test
     fun `should not offer to translate the page`() =
         runTest {

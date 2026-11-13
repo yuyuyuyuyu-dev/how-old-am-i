@@ -1,10 +1,11 @@
 @file:OptIn(ExperimentalWasmJsInterop::class, ExperimentalTestApi::class)
 
-package dev.yuyuyuyuyu.howoldami
+package dev.yuyuyuyuyu.howoldami.nonspec
 
 import androidx.compose.ui.test.ComposeUiTest
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.v2.runComposeUiTest
+import dev.yuyuyuyuyu.howoldami.WebApp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -31,7 +32,7 @@ private external fun setBrowserLanguage(language: String)
 @JsFun("() => { delete navigator.language; delete navigator.languages; }")
 private external fun restoreBrowserLanguage()
 
-class WebAppTest {
+class PageLanguageTest {
     @Test
     fun `should mark the page as English for a browser in English`() =
         runComposeUiTest {

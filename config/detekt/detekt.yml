@@ -10,6 +10,37 @@ naming:
         "**/androidInstrumentedTest/**",
         "**/jsTest/**",
         "**/iosTest/**",
-        "**/wasmJsTest/**",
+        "**/webTest/**",
       ]
     ignoreAnnotated: ["Composable"]
+
+complexity:
+  TooManyFunctions:
+    excludes:
+      [
+        "**/test/**",
+        "**/androidTest/**",
+        "**/commonTest/**",
+        "**/jvmTest/**",
+        "**/androidUnitTest/**",
+        "**/androidInstrumentedTest/**",
+        "**/jsTest/**",
+        "**/iosTest/**",
+        "**/webTest/**",
+      ]
+
+style:
+  MagicNumber:
+    excludes:
+      [
+        "**/test/**",
+        "**/androidTest/**",
+        "**/commonTest/**",
+        "**/jvmTest/**",
+        "**/androidUnitTest/**",
+        "**/androidInstrumentedTest/**",
+        "**/jsTest/**",
+        "**/iosTest/**",
+        "**/webTest/**",
+        "**/*.kts",
+      ]
