@@ -66,6 +66,9 @@ kotlin {
             @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
             implementation(compose.uiTest)
         }
+        wasmJsTest.dependencies {
+            implementation(libs.kotlinx.coroutines.test)
+        }
     }
 }
 
