@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="How old am I">
+  <rect width="512" height="512" fill="#FFFFFF"/>
+  <rect x="116" y="136" width="280" height="256" rx="36" fill="#1565C0"/>
+  <rect x="136" y="200" width="240" height="172" rx="20" fill="#E3F2FD"/>
+  <g fill="#1565C0" stroke="#FFFFFF" stroke-width="10">
+    <rect x="171" y="100" width="30" height="68" rx="15"/>
+    <rect x="241" y="100" width="30" height="68" rx="15"/>
+    <rect x="311" y="100" width="30" height="68" rx="15"/>
+  </g>
+  <g fill="#FF8F00">
+    <path d="M216 218c9 12 13 20 13 27a13 13 0 0 1-26 0c0-7 4-15 13-27z"/>
+    <path d="M256 218c9 12 13 20 13 27a13 13 0 0 1-26 0c0-7 4-15 13-27z"/>
+    <path d="M296 218c9 12 13 20 13 27a13 13 0 0 1-26 0c0-7 4-15 13-27z"/>
+  </g>
+  <g fill="#1565C0">
+    <rect x="209" y="254" width="14" height="34" rx="4"/>
+    <rect x="249" y="254" width="14" height="34" rx="4"/>
+    <rect x="289" y="254" width="14" height="34" rx="4"/>
+    <rect x="172" y="284" width="168" height="64" rx="12"/>
+  </g>
+  <path fill="#FFFFFF" d="M172 296a12 12 0 0 1 12-12h144a12 12 0 0 1 12 12v12a14 14 0 0 1-28 0a14 14 0 0 1-28 0a14 14 0 0 1-28 0a14 14 0 0 1-28 0a14 14 0 0 1-28 0a14 14 0 0 1-28 0z"/>
+  <rect x="156" y="346" width="200" height="12" rx="6" fill="#0D47A1"/>
+</svg>
